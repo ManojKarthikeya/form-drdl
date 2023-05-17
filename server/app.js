@@ -6,3 +6,13 @@ connectDB();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use("/api", require("./routes/apiRoutes"))
+
+app.get("/", (req, res) => {
+	res.send("Hello World!");
+});
+
+app.listen(process.env.PORT, () => {
+	console.log(`App listening on port ${process.env.PORT}`);
+});
