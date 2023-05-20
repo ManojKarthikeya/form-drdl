@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SplitButton from "../Components/SplitButton";
 import { TextField } from "@mui/material";
 import "./../Styles/home.css";
@@ -18,7 +18,7 @@ export default function Home() {
 				disabled={selected === 3}
 				value={selected === 3 ? "All Responses" : inputVal}
 				onChange={(event) => setInputVal(event.target.value)}
-				style={{ marginBottom: "25px", width :"25vw" }}
+				style={{ marginBottom: "25px", width: "25vw" }}
 			/>
 			<br></br>
 			<SplitButton
