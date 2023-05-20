@@ -10,15 +10,15 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <Home />,
-	},
-	{
-		path: "/responses",
-		element: <SearchResponse />,
-	},
-	{ path: "response/:responseId", element: <Response /> },
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/responses",
+    element: <SearchResponse />,
+  },
+  { path: "response/:responseId", element: <Response /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
