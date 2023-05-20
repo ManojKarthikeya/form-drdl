@@ -63,7 +63,6 @@ export default function CustomInput() {
 			backgroundColor: "white",
 		},
 	}));
-	console.log(formats.includes("bold") ? "bold" : "");
 	return (
 		<React.Fragment>
 			<FieldEditor>
