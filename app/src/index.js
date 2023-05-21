@@ -20,7 +20,7 @@ import {
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <ResponseList />,
+		element: <SearchResponse />,
 	},
 	{
 		path: "/responses",

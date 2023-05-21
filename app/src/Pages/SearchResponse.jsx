@@ -43,7 +43,7 @@ export default function SearchResponse() {
       const response = await axiosInstance.get(
         `${FIND_RESPONSE_BY_ID}${inputVal}`
       );
-      if (Object.keys(response.data).length === 0 || !response.data) {
+      if (!response.data || Object.keys(response.data).length === 0 ) {
         // alert('Id is not valid!');
         setIsDialogOpen(true);
       } else {
