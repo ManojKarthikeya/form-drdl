@@ -17,11 +17,7 @@ import UserIdResponse from "./Pages/UseridResponse";
 const router = createBrowserRouter([
 	{
 		path: "/",
-<<<<<<< HEAD
-		element: <SearchResponse />,
-=======
 		element: <Home />,
->>>>>>> 6ebe0a1a27319a0b843ae5336b4be3a9a3dc746d
 	},
 	{
 		path: "/responses",
