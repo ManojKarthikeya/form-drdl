@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import AllResponses from "./Pages/AllResponses";
 import SearchForm from "./Pages/SearchForm";
 import Form from "./Pages/Form";
+import UserIdResponse from "./Pages/UseridResponse";
 
 const router = createBrowserRouter([
 	{
@@ -25,7 +26,8 @@ const router = createBrowserRouter([
 	{ path: "response/:responseId", element: <Response /> },
 	{ path: "/responses/all", element: <AllResponses /> },
 	{ path: "/forms", element: <SearchForm /> },
-	{path : "/form/:formId", element : <Form />}
+	{path : "/form/:formId", element : <Form />},
+	{path: "/response/user/:userid", element: <UserIdResponse />}
 ]);
 
 const queryClient = new QueryClient();
