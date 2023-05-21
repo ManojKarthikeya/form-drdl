@@ -8,14 +8,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Form from "./Pages/Form";
 import ResponseList from "./Pages/ResponseList";
-import {
-	useQuery,
-	useQueryClient,
-	QueryClient,
-	QueryClientProvider,
-} from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const router = createBrowserRouter([
 	{
@@ -32,6 +26,10 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+	<QueryClientProvider client={queryClient}>
+		<RouterProvider router={router} />
+	</QueryClientProvider>
+);
 
 export { queryClient };
