@@ -18,8 +18,10 @@ import axiosInstance from "../Helpers/axios";
 import { FIND_RESPONSE_BY_ID } from "../Helpers/url_helper";
 import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router";
 
 export default function SearchResponse() {
+  const navigate = useNavigate();
   const labels = ["Response ID", "User ID", "Form Name", ""];
   const options = [
     "Search by Response ID",
@@ -45,7 +47,7 @@ export default function SearchResponse() {
         // alert('Id is not valid!');
         setIsDialogOpen(true);
       } else {
-        console.log(response.data);
+        navigate(`/response/${response.data._id}`, { state: response.data });
       }
     }
   };
