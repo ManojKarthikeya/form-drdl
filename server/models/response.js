@@ -4,6 +4,7 @@ const responseSchema = new mongoose.Schema(
 	{
 		userId: { type: String, required: true },
 		formId: { type: mongoose.Schema.Types.ObjectId },
+		formName: { type: String, required: true },
 		fields: {
 			type: [
 				{

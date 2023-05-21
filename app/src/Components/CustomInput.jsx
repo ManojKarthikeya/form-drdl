@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "./custom-input-styles.css";
-import { Tooltip, styled, tooltipClasses } from "@mui/material";
+import { TextField, Tooltip, styled, tooltipClasses } from "@mui/material";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
@@ -11,9 +10,13 @@ import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import EditIcon from "@mui/icons-material/Edit";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-export default function CustomInput() {
+export default function CustomInput({
+	disableUnderline,
+	textValue,
+	textChange,
+}) {
 	const [formats, setFormats] = React.useState(["bold"]);
-	const [fontsize, setFontsize] = useState(16)
+	const [fontsize, setFontsize] = useState(16);
 	const [input, setInput] = useState("");
 	const handleFormat = (event, newFormats) => {
 		setOpen(true);
@@ -44,14 +47,20 @@ export default function CustomInput() {
 						>
 							<FormatUnderlinedIcon style={{ fontSize: 16 }} />
 						</ToggleButton>
-						<ToggleButton disabled={fontsize > 24} onClick={()=> {
-							setFontsize(fontsize + 2)
-						}}>
+						<ToggleButton
+							disabled={fontsize > 24}
+							onClick={() => {
+								setFontsize(fontsize + 2);
+							}}
+						>
 							<TextIncreaseIcon style={{ fontSize: 16 }} />
 						</ToggleButton>
-						<ToggleButton disabled={fontsize < 12} onClick={()=> {
-							setFontsize(fontsize - 1)
-						}}>
+						<ToggleButton
+							disabled={fontsize < 12}
+							onClick={() => {
+								setFontsize(fontsize - 1);
+							}}
+						>
 							<TextDecreaseIcon style={{ fontSize: 16 }} />
 						</ToggleButton>
 					</ToggleButtonGroup>
@@ -66,17 +75,25 @@ export default function CustomInput() {
 	return (
 		<React.Fragment>
 			<FieldEditor>
-				<input
-				autoFocus
+				<TextField
+					autoFocus
 					id="standard-basic"
 					variant="standard"
-					value={input}
-					onChange={(event) => setInput(event.target.value)}
+					value={textValue}
+					onChange={textChange}
 					style={{
-						fontSize : fontsize,
+						width: disableUnderline ? "" : "60%",
+						fontSize: fontsize,
 						fontWeight: formats.includes("bold") ? "bold" : "",
-						fontStyle : formats.includes("italic") ? "italic" : "normal",
-						textDecoration : formats.includes("underlined" ) ? "underline" : ""
+						fontStyle: formats.includes("italic")
+							? "italic"
+							: "normal",
+						textDecoration: formats.includes("underlined")
+							? "underline"
+							: "",
+					}}
+					InputProps={{
+						disableUnderline: disableUnderline,
 					}}
 				/>
 			</FieldEditor>

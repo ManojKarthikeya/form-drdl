@@ -35,11 +35,14 @@ router.get("/response", (req, res) => {
 });
 
 router.post("/response", (req, res) => {
-	const { userId, fields } = req.body;
+	const { userId, fields, formName, formId } = req.body;
+	console.log(req.body)
 	response
 		.create({
 			userId: userId,
 			fields: fields,
+			formName : formName,
+			formId : formId
 		})
 		.then(() => {
 			res.send("Created Successfully!");

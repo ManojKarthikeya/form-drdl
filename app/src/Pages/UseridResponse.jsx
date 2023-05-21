@@ -17,12 +17,17 @@ import {
 	FIND_RESPONSES_BY_USER,
 	GET_ALL_RESPONSES,
 } from "../Helpers/url_helper";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function UserIdResponse() {
-    const {userid} = useParams()
-	const { status, data, error, isFetching } = useQuery(["responses", userid], () =>
-		axiosInstance.get(`${FIND_RESPONSES_BY_USER}${userid}`).then((res) => res.data)
+	const navigate = useNavigate();
+	const { userid } = useParams();
+	const { status, data, error, isFetching } = useQuery(
+		["responses", userid],
+		() =>
+			axiosInstance
+				.get(`${FIND_RESPONSES_BY_USER}${userid}`)
+				.then((res) => res.data)
 	);
 	if (status === "loading") {
 		return <div>Loading...</div>;
@@ -32,30 +37,46 @@ export default function UserIdResponse() {
 			{data.map((response) => {
 				const date = new Date(response.createdAt);
 				return (
-					<List>
-						<ListItem
-							sx={{ width: "600px" }}
-							secondaryAction={
-								<IconButton edge="end" aria-label="delete">
-									<EditIcon />
-								</IconButton>
-							}
+					<React.Fragment>
+						<h3
+							style={{
+								fontFamily: "'Roboto', sans-serif",
+								marginLeft: "20px",
+							}}
 						>
-							<ListItemButton>
-								<ListItemAvatar>
-									<Avatar>
-										<InsertDriveFileIcon />
-									</Avatar>
-								</ListItemAvatar>
-								<ListItemText
-									primary={response._id}
-									secondary={`${date.getDate()}-${
-										date.getUTCMonth() + 1
-									}-${date.getFullYear()} - ${date.toLocaleTimeString()}`}
-								/>
-							</ListItemButton>
-						</ListItem>
-					</List>
+							User : {userid}
+						</h3>
+						<List>
+							<ListItem
+								sx={{ width: "600px" }}
+								secondaryAction={
+									<IconButton edge="end" aria-label="delete">
+										<EditIcon />
+									</IconButton>
+								}
+							>
+								<ListItemButton
+									onClick={() => {
+										navigate(`/response/${response._id}`, {
+											state: response,
+										});
+									}}
+								>
+									<ListItemAvatar>
+										<Avatar>
+											<InsertDriveFileIcon />
+										</Avatar>
+									</ListItemAvatar>
+									<ListItemText
+										primary={response._id}
+										secondary={`${date.getDate()}-${
+											date.getUTCMonth() + 1
+										}-${date.getFullYear()} - ${date.toLocaleTimeString()}`}
+									/>
+								</ListItemButton>
+							</ListItem>
+						</List>
+					</React.Fragment>
 				);
 			})}
 		</div>

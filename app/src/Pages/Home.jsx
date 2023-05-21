@@ -11,6 +11,7 @@ export default function Home() {
 				onClick={() => {
 					navigate("/responses");
 				}}
+				style={{marginRight: "7px"}}
 			>
 				View Form Responses
 			</Button>

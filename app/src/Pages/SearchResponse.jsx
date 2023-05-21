@@ -13,7 +13,6 @@ import {
   TextField,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import "./../Styles/home.css";
 import axiosInstance from "../Helpers/axios";
 import { FIND_RESPONSE_BY_ID } from "../Helpers/url_helper";
 import Dialog from "@mui/material/Dialog";
@@ -77,7 +76,7 @@ export default function SearchResponse() {
     setOpen(false);
   };
   return (
-    <div className="res-search-container">
+    <div className="res-search-container" style={{margin : "20px"}}>
       <h4 style={{ fontFamily: "'Roboto', sans-serif" }}>
         View Form Responses
       </h4>
@@ -87,7 +86,7 @@ export default function SearchResponse() {
         disabled={selectedIndex === 3}
         value={selectedIndex === 3 ? "All Responses" : inputVal}
         onChange={(event) => setInputVal(event.target.value)}
-        style={{ marginBottom: "25px", width: "25vw" }}
+        style={{ marginBottom: "25px", width: "400px" }}
       />
       <br></br>
       <ButtonGroup
