@@ -31,7 +31,6 @@ export default function SearchResponse() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  const [responseData, setResponseData] = useState({});
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const indexDetails = ["Response id", "User id", "Form name", "Details"];
