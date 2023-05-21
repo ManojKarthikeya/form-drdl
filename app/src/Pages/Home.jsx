@@ -6,7 +6,14 @@ export default function Home() {
 	const navigate = useNavigate();
 	return (
 		<div>
-			<Button variant="outlined" onClick={() => {navigate("/responses")}}>View Form Responses</Button>
+			<Button
+				variant="outlined"
+				onClick={() => {
+					navigate("/responses");
+				}}
+			>
+				View Form Responses
+			</Button>
 		</div>
 	);
 }
