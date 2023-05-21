@@ -8,30 +8,39 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+import AllResponses from "./Pages/AllResponses";
+import SearchForm from "./Pages/SearchForm";
 import Form from "./Pages/Form";
-import ResponseList from "./Pages/ResponseList";
-import {
-	useQuery,
-	useQueryClient,
-	QueryClient,
-	QueryClientProvider,
-} from "react-query";
+import UserIdResponse from "./Pages/UseridResponse";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
+<<<<<<< HEAD
 		element: <SearchResponse />,
+=======
+		element: <Home />,
+>>>>>>> 6ebe0a1a27319a0b843ae5336b4be3a9a3dc746d
 	},
 	{
 		path: "/responses",
 		element: <SearchResponse />,
 	},
 	{ path: "response/:responseId", element: <Response /> },
+	{ path: "/responses/all", element: <AllResponses /> },
+	{ path: "/forms", element: <SearchForm /> },
+	{path : "/form/:formId", element : <Form />},
+	{path: "/response/user/:userid", element: <UserIdResponse />}
 ]);
 
 const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+	<QueryClientProvider client={queryClient}>
+		<RouterProvider router={router} />
+	</QueryClientProvider>
+);
 
 export { queryClient };

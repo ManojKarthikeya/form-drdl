@@ -49,6 +49,11 @@ export default function SearchResponse() {
       } else {
         navigate(`/response/${response.data._id}`, { state: response.data });
       }
+    } else if (selectedIndex === 3){
+      navigate("/responses/all")
+    }
+    else if (selectedIndex === 1){
+      navigate(`/response/user/${inputVal}`);
     }
   };
   const closeDialog = () => {

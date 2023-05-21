@@ -14,6 +14,14 @@ export default function Home() {
 			>
 				View Form Responses
 			</Button>
+			<Button
+				variant="outlined"
+				onClick={() => {
+					navigate("/forms");
+				}}
+			>
+				Fill a form
+			</Button>
 		</div>
 	);
 }
