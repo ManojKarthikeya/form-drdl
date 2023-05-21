@@ -16,7 +16,7 @@ import axiosInstance from "../Helpers/axios";
 import {
 	FIND_RESPONSES_BY_USER,
 	GET_ALL_RESPONSES,
-} from "./../Helpers/url_helper";
+} from "../Helpers/url_helper";
 
 const useResponses = async () => {
 	return useQuery(["responses"]);
@@ -34,7 +34,7 @@ const useResponses = async () => {
 // 	});
 // };
 
-export default function ResponseList() {
+export default function AllResponses() {
 	const queryClient = useQueryClient();
 	const { status, data, error, isFetching } = useQuery("responses", () =>
 		axiosInstance.get(GET_ALL_RESPONSES).then((res) => res.data)
