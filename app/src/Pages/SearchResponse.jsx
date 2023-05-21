@@ -52,6 +52,9 @@ export default function SearchResponse() {
     } else if (selectedIndex === 3){
       navigate("/responses/all")
     }
+    else if (selectedIndex === 1){
+      navigate(`/response/user/${inputVal}`);
+    }
   };
   const closeDialog = () => {
     setIsDialogOpen(false);

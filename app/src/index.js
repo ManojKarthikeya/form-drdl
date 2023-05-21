@@ -10,6 +10,7 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import AllResponses from "./Pages/AllResponses";
+import UserIdResponse from "./Pages/UseridResponse";
 
 const router = createBrowserRouter([
 	{
@@ -21,7 +22,8 @@ const router = createBrowserRouter([
 		element: <SearchResponse />,
 	},
 	{ path: "response/:responseId", element: <Response /> },
-	{path: "/responses/all", element : <AllResponses />}
+	{path: "/responses/all", element : <AllResponses />},
+	{path: "/response/user/:userid", element: <UserIdResponse />}
 ]);
 
 const queryClient = new QueryClient();
