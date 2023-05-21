@@ -1,6 +1,7 @@
 const express = require("express");
 const response = require("../models/response");
 const { default: mongoose } = require("mongoose");
+const form = require("../models/form");
 const router = express.Router();
 const ObjectId = require("mongoose").Types.ObjectId;
 
@@ -44,5 +45,37 @@ router.post("/response", (req, res) => {
 			res.send("Created Successfully!");
 		});
 });
+
+// FORMS
+
+router.get("/form", (req, res) => {
+	form
+	.find({})
+	.exec()
+	.then((responseObject) => res.send(JSON.stringify(responseObject)));
+})
+
+router.get("/form/:id", (req, res) => {
+	id = req.params.id;
+	if (!ObjectId.isValid(id)) {
+		res.send({});
+	} else {
+		form
+			.findById(id)
+			.exec()
+			.then((responseObject) => res.send(JSON.stringify(responseObject)));
+	}
+})
+
+router.post("/form", (req, res) => {
+	const {name, fields} = req.body;
+	form.create({
+		name : name,
+		fields : fields
+	}).then((news)=>{
+		console.log(news)
+		res.send(news)
+	})
+})
 
 module.exports = router;
