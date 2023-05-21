@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import { Button } from "@mui/material";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-	const [userId, setUserId] = useState("");
+	const navigate = useNavigate();
 	return (
 		<div>
-			<h2>View Form Responses</h2>
-			<input
-				value={userId}
-				onChange={(event) => setUserId(event.target.value)}
-			/>
-			<button>Search</button>
+			<Button
+				variant="outlined"
+				onClick={() => {
+					navigate("/responses");
+				}}
+			>
+				View Form Responses
+			</Button>
 		</div>
 	);
 }
