@@ -11,7 +11,7 @@ export default function Home() {
 				onClick={() => {
 					navigate("/responses");
 				}}
-				style={{marginRight: "7px"}}
+				style={{ marginRight: "7px" }}
 			>
 				View Form Responses
 			</Button>
@@ -20,8 +20,18 @@ export default function Home() {
 				onClick={() => {
 					navigate("/forms");
 				}}
+				style={{ marginRight: "7px" }}
 			>
 				Fill a form
+			</Button>
+			<Button
+				variant="outlined"
+				style={{ marginRight: "7px" }}
+				onClick={() => {
+					navigate("/form/create");
+				}}
+			>
+				Build a form from scratch
 			</Button>
 		</div>
 	);

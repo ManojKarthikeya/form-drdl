@@ -1,18 +1,18 @@
-import { Translate, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
 	Button,
-	Card,
 	FormControl,
 	IconButton,
 	InputAdornment,
 	InputLabel,
 	OutlinedInput,
 	TextField,
-	Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+	const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = React.useState(false);
@@ -31,7 +31,7 @@ export default function Login() {
 				position: "absolute",
 				left: "50%",
 				top: "50%",
-				transform: "translate(-50%,-55%)",
+				transform: "translate(-50%,-60%)",
 			}}
 		>
 			<img
@@ -57,8 +57,8 @@ export default function Login() {
 				<OutlinedInput
 					id="outlined-adornment-password"
 					type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(event) => set}
+					value={password}
+					onChange={(event) => setPassword(event.target.value)}
 					endAdornment={
 						<InputAdornment position="end">
 							<IconButton
@@ -86,7 +86,13 @@ export default function Login() {
 				}}
 			>
 				<Button>Forgot Credentials?</Button>
-				<Button onClick={() => {}}>Log in</Button>
+				<Button
+					onClick={() => {
+						navigate("/home");
+					}}
+				>
+					Log in
+				</Button>
 			</div>
 		</div>
 	);
