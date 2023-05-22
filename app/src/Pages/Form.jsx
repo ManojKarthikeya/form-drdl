@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CustomInput from "../Components/CustomInput";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_RESPONSE, GET_FORM } from "../Helpers/url_helper";
@@ -16,6 +16,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Form() {
+	const navigate = useNavigate();
 	const { formId } = useParams();
 	const res = useQuery(["formId"], () =>
 		axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data)
@@ -32,8 +33,15 @@ export default function Form() {
 			]);
 		}
 	});
-	const mutation = useMutation("responses", (newResponse) =>
-		axiosInstance.post(CREATE_RESPONSE, newResponse)
+	const mutation = useMutation(
+		"responses",
+		(newResponse) => axiosInstance.post(CREATE_RESPONSE, newResponse),
+		{
+			onSuccess: (data) => {
+				console.log(data.data)
+				navigate(`/response/${data.data._id}`, { state: data.data });
+			},
+		}
 	);
 	console.log(inputs);
 	if (res.status === "loading") {

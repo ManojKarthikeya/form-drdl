@@ -13,11 +13,13 @@ import AllResponses from "./Pages/AllResponses";
 import SearchForm from "./Pages/SearchForm";
 import Form from "./Pages/Form";
 import UserIdResponse from "./Pages/UseridResponse";
+import TestCustomInput from "./Pages/TestCustomInput";
+import Login from "./Pages/Login";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Home />,
+		element: <Login />,
 	},
 	{
 		path: "/responses",
@@ -26,8 +28,8 @@ const router = createBrowserRouter([
 	{ path: "response/:responseId", element: <Response /> },
 	{ path: "/responses/all", element: <AllResponses /> },
 	{ path: "/forms", element: <SearchForm /> },
-	{path : "/form/:formId", element : <Form />},
-	{path: "/response/user/:userid", element: <UserIdResponse />}
+	{ path: "/form/:formId", element: <Form /> },
+	{ path: "/response/user/:userid", element: <UserIdResponse /> },
 ]);
 
 const queryClient = new QueryClient();
