@@ -3,24 +3,37 @@ import {
 	Card,
 	CardContent,
 	Checkbox,
-	Grid,
+	IconButton,
 	TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TuneIcon from "@mui/icons-material/Tune";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function QuestionCard() {
+	const [questionText, setQuestionText] = useState("");
 	const [subQuestion, setSubQuestion] = useState(false);
+	const [subQuestionText, setSubQuestionText] = useState("");
 	const [checked, setChecked] = React.useState(true);
 
 	const handleChange = (event) => {
 		setChecked(event.target.checked);
 	};
 	return (
-		<div style={{ display: "flex", gap: "10px" }}>
-			<div style={{ width: "440px" }}>
-				<Card variant="outlined">
+		<div
+			style={{
+				display: "flex",
+				gap: "10px",
+				alignItems: "center",
+				marginBottom: "10px",
+			}}
+		>
+			<div>
+				<Card
+					variant="outlined"
+					sx={{ borderLeft: `6px solid #29b6f6` }}
+				>
 					<CardContent
 						style={{
 							display: "flex",
@@ -29,6 +42,7 @@ export default function QuestionCard() {
 						}}
 					>
 						<Checkbox
+							sx={{ padding: "5px" }}
 							checked={checked}
 							onChange={handleChange}
 							inputProps={{ "aria-label": "controlled" }}
@@ -45,36 +59,56 @@ export default function QuestionCard() {
 								size="small"
 								label="Field Name"
 								margin="dense"
-								style={{ width: "250px" }}
+								style={{
+									width: subQuestion ? "260px" : "335px",
+									maxWidth: subQuestion ? "260px" : "335px",
+								}}
+								value={questionText}
+								onChange={(event) => {
+									setQuestionText(event.target.value);
+								}}
+								autoCapitalize="sentences"
 							/>
 							<TextField
 								variant="standard"
 								value={"Response goes here."}
 								disabled={true}
 								margin="dense"
-								style={{ width: "220px", marginLeft: "auto" }}
-							/>
-						</div>
-						<div style={{ marginLeft: "auto" }}>
-							<TuneIcon
-								color="action"
-								sx={{
-									fontSize: 25,
-									marginRight: "10px",
-									cursor: "pointer",
+								style={{
+									width: subQuestion ? "230px" : "305px",
+									marginLeft: "auto",
+									maxWidth: subQuestion ? "230px" : "305px",
 								}}
 							/>
-							<DeleteIcon
-								color="action"
-								sx={{ fontSize: 25, cursor: "pointer" }}
-							/>
+						</div>
+						<div
+							style={{ marginLeft: "auto", paddingLeft: "15px" }}
+						>
+							<IconButton>
+								<TuneIcon color="action" />
+							</IconButton>
+							<IconButton>
+								<DeleteIcon
+									color="action"
+									onClick={() => {
+										if (subQuestion) {
+											setQuestionText(subQuestionText);
+											setSubQuestionText("");
+											setSubQuestion(false);
+										}
+									}}
+								/>
+							</IconButton>
 						</div>
 					</CardContent>
 				</Card>
 			</div>
-			<div style={{ width: "440px" }}>
+			<div>
 				{subQuestion ? (
-					<Card variant="outlined">
+					<Card
+						variant="outlined"
+						sx={{ borderLeft: `6px solid #4fc3f7` }}
+					>
 						<CardContent
 							style={{
 								display: "flex",
@@ -95,7 +129,11 @@ export default function QuestionCard() {
 									size="small"
 									label="Field Name"
 									margin="dense"
-									style={{ width: "250px" }}
+									style={{ width: "260px" }}
+									value={subQuestionText}
+									onChange={(event) =>
+										setSubQuestionText(event.target.value)
+									}
 								/>
 								<TextField
 									variant="standard"
@@ -103,39 +141,42 @@ export default function QuestionCard() {
 									disabled={true}
 									margin="dense"
 									style={{
-										width: "220px",
+										width: "230px",
 										marginLeft: "auto",
 									}}
 								/>
 							</div>
-							<div style={{ marginLeft: "auto" }}>
-								<TuneIcon
-									sx={{
-										fontSize: 25,
-										marginRight: "10px",
-										cursor: "pointer",
-									}}
-									color="action"
-								/>
-								<DeleteIcon
-									sx={{ fontSize: 25, cursor: "pointer" }}
-									onClick={() => {
-										setSubQuestion(false);
-									}}
-									color="action"
-								/>
+							<div
+								style={{
+									marginLeft: "auto",
+									paddingLeft: "10px",
+									display: "flex",
+								}}
+							>
+								<IconButton>
+									<TuneIcon color="action" />
+								</IconButton>
+								<IconButton>
+									<DeleteIcon
+										onClick={() => {
+											setSubQuestion(false);
+										}}
+										color="action"
+									/>
+								</IconButton>
 							</div>
 						</CardContent>
 					</Card>
 				) : (
 					<Button
+						startIcon={<AddIcon />}
+						style={{ marginLeft: "30px",marginRight: "139px" }}
 						onClick={() => {
 							setSubQuestion(true);
 						}}
 					>
-						Add field here
+						Add subsequent field
 					</Button>
-					// <div style={{width : "420px", border : "1px solid black"}}></div>
 				)}
 			</div>
 		</div>
