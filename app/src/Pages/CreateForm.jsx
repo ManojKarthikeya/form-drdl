@@ -5,18 +5,42 @@ import {
 	Button,
 	Card,
 	CardContent,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
 	IconButton,
+	List,
+	ListItem,
+	ListItemText,
+	MenuItem,
+	Select,
+	Switch,
 	TextField,
 	Toolbar,
 	Typography,
 } from "@mui/material";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import { Palette, Visibility } from "@mui/icons-material";
+import { Add, Palette, Visibility } from "@mui/icons-material";
 import PrintIcon from "@mui/icons-material/Print";
+import ResponseValidation from "../Components/ResponseValidation";
 
 export default function CreateForm() {
 	const [formName, setFormName] = useState("Untitled Form");
 	const [formDescription, setFormDescription] = useState("");
+	const [responseValidation, setResponseValidation] = useState({
+		show: false,
+		typeOfValidation: false,
+		stringSelect: "email",
+		numberSelect: "greater than",
+		lengthSelect: "equal to",
+		valdiationInput: "",
+	});
+	const [formFields, setFormFields] = useState([]);
+	const [selected, setSelected] = useState([])
+	const handleSettingsClick = () => {
+		setResponseValidation({ ...responseValidation, show: true });
+	};
 	return (
 		<div style={{ marginTop: "65px" }}>
 			<AppBar position="fixed" elevation={2} color="primary">
@@ -53,9 +77,11 @@ export default function CreateForm() {
 							color="white"
 						/>
 					</IconButton>
+					<Button sx={{ borderColor: "white", color: "white" }}>
+						Save
+					</Button>
 				</Toolbar>
 			</AppBar>
-
 			<div
 				style={{
 					display: "flex",
@@ -71,9 +97,9 @@ export default function CreateForm() {
 						width: "902px",
 					}}
 				>
-					<CardContent style={{paddingRight : "40px"}}>
+					<CardContent style={{ paddingRight: "40px" }}>
 						<TextField
-            placeholder="Form name"
+							placeholder="Form name"
 							sx={{ marginLeft: "10px" }}
 							margin="normal"
 							fullWidth
@@ -85,7 +111,7 @@ export default function CreateForm() {
 							}
 						/>
 						<TextField
-            placeholder="Form description"
+							placeholder="Form description"
 							multiline
 							sx={{ marginLeft: "10px", marginRight: "15px" }}
 							margin="normal"
@@ -98,16 +124,62 @@ export default function CreateForm() {
 						/>
 					</CardContent>
 				</Card>
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
-				<QuestionCard />
+				{formFields.map((formField, index) => {
+					return (
+						<QuestionCard
+							key={index}
+							handleSettingsClick={handleSettingsClick}
+							formField={formField}
+							setFormFields={setFormFields}
+							setSelected={setSelected}
+							selected={selected}
+						/>
+					);
+				})}
+				<div style={{ width: "910px" }}>
+					<Button
+						startIcon={<Add />}
+						onClick={() => {
+							setFormFields([
+								...formFields,
+								{
+									id: Date.now(),
+									type: "standard",
+									question: "",
+									isRequired : "false",
+									questionStyles : {
+										fontSize : 16,
+										underlined : false,
+										italic : false,
+										bold: false,
+										fontColor : "black"
+									},
+									responseStyles : {
+										fontSize : 16,
+										underlined : false,
+										italic : false,
+										bold: false,
+										fontColor : "black"
+									},
+									needsValidation: false,
+									validation : {
+										type : "",
+										condition : "",
+										value : ""
+									},
+									subQuestion : false
+								},
+							]);
+						}}
+					>
+						Add a field
+					</Button>
+				</div>
 			</div>
+			<ResponseValidation
+				responseValidation={responseValidation}
+				setResponseValidation={setResponseValidation}
+			/>
 		</div>
 	);
 }

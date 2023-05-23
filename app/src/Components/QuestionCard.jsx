@@ -10,16 +10,15 @@ import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TuneIcon from "@mui/icons-material/Tune";
 import AddIcon from "@mui/icons-material/Add";
+import { Settings } from "@mui/icons-material";
 
-export default function QuestionCard() {
-	const [questionText, setQuestionText] = useState("");
-	const [subQuestion, setSubQuestion] = useState(false);
-	const [subQuestionText, setSubQuestionText] = useState("");
-	const [checked, setChecked] = React.useState(true);
-
-	const handleChange = (event) => {
-		setChecked(event.target.checked);
-	};
+export default function QuestionCard({
+	handleSettingsClick,
+	formField,
+	setFormFields,
+	setSelected,
+	selected,
+}) {
 	return (
 		<div
 			style={{
@@ -43,8 +42,16 @@ export default function QuestionCard() {
 					>
 						<Checkbox
 							sx={{ padding: "5px" }}
-							checked={checked}
-							onChange={handleChange}
+							checked={selected.includes(formField.id)}
+							onChange={() => {
+								selected.includes(formField.id)
+									? setSelected(() =>
+											selected.filter(
+												(id) => id !== formField.id
+											)
+									  )
+									: setSelected([...selected, formField.id]);
+							}}
 							inputProps={{ "aria-label": "controlled" }}
 						/>
 						<div
@@ -57,15 +64,22 @@ export default function QuestionCard() {
 						>
 							<TextField
 								size="small"
-								label="Field Name"
+								label="Question"
 								margin="dense"
 								style={{
-									width: subQuestion ? "260px" : "335px",
-									maxWidth: subQuestion ? "260px" : "335px",
+									width: formField.subQuestion
+										? "260px"
+										: "335px",
+									maxWidth: formField.subQuestion
+										? "260px"
+										: "335px",
 								}}
-								value={questionText}
+								value={formField.question}
 								onChange={(event) => {
-									setQuestionText(event.target.value);
+									formField.question = event.target.value;
+									setFormFields((formFields) => [
+										...formFields,
+									]);
 								}}
 								autoCapitalize="sentences"
 							/>
@@ -75,36 +89,53 @@ export default function QuestionCard() {
 								disabled={true}
 								margin="dense"
 								style={{
-									width: subQuestion ? "230px" : "305px",
+									width: formField.subQuestion
+										? "230px"
+										: "305px",
 									marginLeft: "auto",
-									maxWidth: subQuestion ? "230px" : "305px",
+									maxWidth: formField.subQuestion
+										? "230px"
+										: "305px",
 								}}
 							/>
 						</div>
 						<div
 							style={{ marginLeft: "auto", paddingLeft: "15px" }}
 						>
-							<IconButton>
-								<TuneIcon color="action" />
+							<IconButton onClick={handleSettingsClick}>
+								<Settings color="action" />
 							</IconButton>
-							<IconButton>
-								<DeleteIcon
-									color="action"
-									onClick={() => {
-										if (subQuestion) {
-											setQuestionText(subQuestionText);
-											setSubQuestionText("");
-											setSubQuestion(false);
-										}
-									}}
-								/>
+							<IconButton
+								onClick={() => {
+									if (formField.subQuestion) {
+										setFormFields((formFields) =>
+											formFields.map((item) => {
+												if (item.id === formField.id) {
+													return {
+														...item.subQuestion,
+													};
+												}
+												return item;
+											})
+										);
+									} else {
+										setFormFields((formFields) =>
+											formFields.filter(
+												(item) =>
+													item.id !== formField.id
+											)
+										);
+									}
+								}}
+							>
+								<DeleteIcon color="action" />
 							</IconButton>
 						</div>
 					</CardContent>
 				</Card>
 			</div>
 			<div>
-				{subQuestion ? (
+				{formField.subQuestion ? (
 					<Card
 						variant="outlined"
 						sx={{ borderLeft: `6px solid #4fc3f7` }}
@@ -130,10 +161,14 @@ export default function QuestionCard() {
 									label="Field Name"
 									margin="dense"
 									style={{ width: "260px" }}
-									value={subQuestionText}
-									onChange={(event) =>
-										setSubQuestionText(event.target.value)
-									}
+									value={formField.subQuestion.question}
+									onChange={(event) => {
+										formField.subQuestion.question =
+											event.target.value;
+										setFormFields((formFields) => [
+											...formFields,
+										]);
+									}}
 								/>
 								<TextField
 									variant="standard"
@@ -156,13 +191,15 @@ export default function QuestionCard() {
 								<IconButton>
 									<TuneIcon color="action" />
 								</IconButton>
-								<IconButton>
-									<DeleteIcon
-										onClick={() => {
-											setSubQuestion(false);
-										}}
-										color="action"
-									/>
+								<IconButton
+									onClick={() => {
+										formField.subQuestion = false;
+										setFormFields((formFields) => [
+											...formFields,
+										]);
+									}}
+								>
+									<DeleteIcon color="action" />
 								</IconButton>
 							</div>
 						</CardContent>
@@ -170,9 +207,44 @@ export default function QuestionCard() {
 				) : (
 					<Button
 						startIcon={<AddIcon />}
-						style={{ marginLeft: "30px",marginRight: "139px" }}
+						style={{ marginLeft: "30px", marginRight: "139px" }}
 						onClick={() => {
-							setSubQuestion(true);
+							setFormFields((formFields) =>
+								formFields.map((item) => {
+									if (item.id === formField.id) {
+										return {
+											...item,
+											subQuestion: {
+												id: Date.now(),
+												type: "standard",
+												question: "",
+												isRequired: "false",
+												questionStyles: {
+													fontSize: 16,
+													underlined: false,
+													italic: false,
+													bold: false,
+													fontColor: "black",
+												},
+												responseStyles: {
+													fontSize: 16,
+													underlined: false,
+													italic: false,
+													bold: false,
+													fontColor: "black",
+												},
+												needsValidation: false,
+												validation: {
+													type: "",
+													condition: "",
+													value: "",
+												},
+											},
+										};
+									}
+									return item;
+								})
+							);
 						}}
 					>
 						Add subsequent field
