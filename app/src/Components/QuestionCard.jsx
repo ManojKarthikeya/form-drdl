@@ -3,24 +3,36 @@ import {
 	Card,
 	CardContent,
 	Checkbox,
-	Grid,
+	IconButton,
 	TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TuneIcon from "@mui/icons-material/Tune";
+import AddIcon from "@mui/icons-material/Add";
+import { Settings } from "@mui/icons-material";
 
-export default function QuestionCard() {
-	const [subQuestion, setSubQuestion] = useState(false);
-	const [checked, setChecked] = React.useState(true);
-
-	const handleChange = (event) => {
-		setChecked(event.target.checked);
-	};
+export default function QuestionCard({
+	handleSettingsClick,
+	formField,
+	setFormFields,
+	setSelected,
+	selected,
+}) {
 	return (
-		<div style={{ display: "flex", gap: "10px" }}>
-			<div style={{ width: "440px" }}>
-				<Card variant="outlined">
+		<div
+			style={{
+				display: "flex",
+				gap: "10px",
+				alignItems: "center",
+				marginBottom: "10px",
+			}}
+		>
+			<div>
+				<Card
+					variant="outlined"
+					sx={{ borderLeft: `6px solid #29b6f6` }}
+				>
 					<CardContent
 						style={{
 							display: "flex",
@@ -29,8 +41,17 @@ export default function QuestionCard() {
 						}}
 					>
 						<Checkbox
-							checked={checked}
-							onChange={handleChange}
+							sx={{ padding: "5px" }}
+							checked={selected.includes(formField.id)}
+							onChange={() => {
+								selected.includes(formField.id)
+									? setSelected(() =>
+											selected.filter(
+												(id) => id !== formField.id
+											)
+									  )
+									: setSelected([...selected, formField.id]);
+							}}
 							inputProps={{ "aria-label": "controlled" }}
 						/>
 						<div
@@ -43,38 +64,82 @@ export default function QuestionCard() {
 						>
 							<TextField
 								size="small"
-								label="Field Name"
+								label="Question"
 								margin="dense"
-								style={{ width: "250px" }}
+								style={{
+									width: formField.subQuestion
+										? "260px"
+										: "335px",
+									maxWidth: formField.subQuestion
+										? "260px"
+										: "335px",
+								}}
+								value={formField.question}
+								onChange={(event) => {
+									formField.question = event.target.value;
+									setFormFields((formFields) => [
+										...formFields,
+									]);
+								}}
+								autoCapitalize="sentences"
 							/>
 							<TextField
 								variant="standard"
 								value={"Response goes here."}
 								disabled={true}
 								margin="dense"
-								style={{ width: "220px", marginLeft: "auto" }}
-							/>
-						</div>
-						<div style={{ marginLeft: "auto" }}>
-							<TuneIcon
-								color="action"
-								sx={{
-									fontSize: 25,
-									marginRight: "10px",
-									cursor: "pointer",
+								style={{
+									width: formField.subQuestion
+										? "230px"
+										: "305px",
+									marginLeft: "auto",
+									maxWidth: formField.subQuestion
+										? "230px"
+										: "305px",
 								}}
 							/>
-							<DeleteIcon
-								color="action"
-								sx={{ fontSize: 25, cursor: "pointer" }}
-							/>
+						</div>
+						<div
+							style={{ marginLeft: "auto", paddingLeft: "15px" }}
+						>
+							<IconButton onClick={handleSettingsClick}>
+								<Settings color="action" />
+							</IconButton>
+							<IconButton
+								onClick={() => {
+									if (formField.subQuestion) {
+										setFormFields((formFields) =>
+											formFields.map((item) => {
+												if (item.id === formField.id) {
+													return {
+														...item.subQuestion,
+													};
+												}
+												return item;
+											})
+										);
+									} else {
+										setFormFields((formFields) =>
+											formFields.filter(
+												(item) =>
+													item.id !== formField.id
+											)
+										);
+									}
+								}}
+							>
+								<DeleteIcon color="action" />
+							</IconButton>
 						</div>
 					</CardContent>
 				</Card>
 			</div>
-			<div style={{ width: "440px" }}>
-				{subQuestion ? (
-					<Card variant="outlined">
+			<div>
+				{formField.subQuestion ? (
+					<Card
+						variant="outlined"
+						sx={{ borderLeft: `6px solid #4fc3f7` }}
+					>
 						<CardContent
 							style={{
 								display: "flex",
@@ -95,7 +160,15 @@ export default function QuestionCard() {
 									size="small"
 									label="Field Name"
 									margin="dense"
-									style={{ width: "250px" }}
+									style={{ width: "260px" }}
+									value={formField.subQuestion.question}
+									onChange={(event) => {
+										formField.subQuestion.question =
+											event.target.value;
+										setFormFields((formFields) => [
+											...formFields,
+										]);
+									}}
 								/>
 								<TextField
 									variant="standard"
@@ -103,39 +176,79 @@ export default function QuestionCard() {
 									disabled={true}
 									margin="dense"
 									style={{
-										width: "220px",
+										width: "230px",
 										marginLeft: "auto",
 									}}
 								/>
 							</div>
-							<div style={{ marginLeft: "auto" }}>
-								<TuneIcon
-									sx={{
-										fontSize: 25,
-										marginRight: "10px",
-										cursor: "pointer",
-									}}
-									color="action"
-								/>
-								<DeleteIcon
-									sx={{ fontSize: 25, cursor: "pointer" }}
+							<div
+								style={{
+									marginLeft: "auto",
+									paddingLeft: "10px",
+									display: "flex",
+								}}
+							>
+								<IconButton>
+									<TuneIcon color="action" />
+								</IconButton>
+								<IconButton
 									onClick={() => {
-										setSubQuestion(false);
+										formField.subQuestion = false;
+										setFormFields((formFields) => [
+											...formFields,
+										]);
 									}}
-									color="action"
-								/>
+								>
+									<DeleteIcon color="action" />
+								</IconButton>
 							</div>
 						</CardContent>
 					</Card>
 				) : (
 					<Button
+						startIcon={<AddIcon />}
+						style={{ marginLeft: "30px", marginRight: "139px" }}
 						onClick={() => {
-							setSubQuestion(true);
+							setFormFields((formFields) =>
+								formFields.map((item) => {
+									if (item.id === formField.id) {
+										return {
+											...item,
+											subQuestion: {
+												id: Date.now(),
+												type: "standard",
+												question: "",
+												isRequired: "false",
+												questionStyles: {
+													fontSize: 16,
+													underlined: false,
+													italic: false,
+													bold: false,
+													fontColor: "black",
+												},
+												responseStyles: {
+													fontSize: 16,
+													underlined: false,
+													italic: false,
+													bold: false,
+													fontColor: "black",
+												},
+												needsValidation: false,
+												validation: {
+													type: "",
+													condition: "",
+													value: "",
+												},
+											},
+										};
+									}
+									return item;
+								})
+							);
 						}}
 					>
-						Add field here
+						Add subsequent field
 					</Button>
-					// <div style={{width : "420px", border : "1px solid black"}}></div>
 				)}
 			</div>
 		</div>
