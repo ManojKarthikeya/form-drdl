@@ -13,10 +13,16 @@ import AllResponses from "./Pages/AllResponses";
 import SearchForm from "./Pages/SearchForm";
 import Form from "./Pages/Form";
 import UserIdResponse from "./Pages/UseridResponse";
+import Login from "./Pages/Login";
+import CreateForm from "./Pages/CreateForm";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
+		element: <Login />,
+	},
+	{
+		path: "/home",
 		element: <Home />,
 	},
 	{
@@ -26,8 +32,9 @@ const router = createBrowserRouter([
 	{ path: "response/:responseId", element: <Response /> },
 	{ path: "/responses/all", element: <AllResponses /> },
 	{ path: "/forms", element: <SearchForm /> },
-	{path : "/form/:formId", element : <Form />},
-	{path: "/response/user/:userid", element: <UserIdResponse />}
+	{ path: "/form/:formId", element: <Form /> },
+	{ path: "/response/user/:userid", element: <UserIdResponse /> },
+	{ path: "/form/create", element: <CreateForm /> },
 ]);
 
 const queryClient = new QueryClient();
@@ -38,5 +45,3 @@ root.render(
 		<RouterProvider router={router} />
 	</QueryClientProvider>
 );
-
-export { queryClient };
