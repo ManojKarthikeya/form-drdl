@@ -5,17 +5,7 @@ import {
 	Button,
 	Card,
 	CardContent,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
 	IconButton,
-	List,
-	ListItem,
-	ListItemText,
-	MenuItem,
-	Select,
-	Switch,
 	TextField,
 	Toolbar,
 	Typography,
@@ -28,19 +18,12 @@ import ResponseValidation from "../Components/ResponseValidation";
 export default function CreateForm() {
 	const [formName, setFormName] = useState("Untitled Form");
 	const [formDescription, setFormDescription] = useState("");
-	const [responseValidation, setResponseValidation] = useState({
-		show: false,
-		typeOfValidation: false,
-		stringSelect: "email",
-		numberSelect: "greater than",
-		lengthSelect: "equal to",
-		valdiationInput: "",
-	});
 	const [formFields, setFormFields] = useState([]);
-	const [selected, setSelected] = useState([])
-	const handleSettingsClick = () => {
-		setResponseValidation({ ...responseValidation, show: true });
-	};
+	const [selected, setSelected] = useState([]);
+
+	
+
+	const handleSettingsClick = (id, subQuestion) => {};
 	return (
 		<div style={{ marginTop: "65px" }}>
 			<AppBar position="fixed" elevation={2} color="primary">
@@ -146,28 +129,28 @@ export default function CreateForm() {
 									id: Date.now(),
 									type: "standard",
 									question: "",
-									isRequired : "false",
-									questionStyles : {
-										fontSize : 16,
-										underlined : false,
-										italic : false,
+									isRequired: "false",
+									questionStyles: {
+										fontSize: 16,
+										underlined: false,
+										italic: false,
 										bold: false,
-										fontColor : "black"
+										fontColor: "black",
 									},
-									responseStyles : {
-										fontSize : 16,
-										underlined : false,
-										italic : false,
+									responseStyles: {
+										fontSize: 16,
+										underlined: false,
+										italic: false,
 										bold: false,
-										fontColor : "black"
+										fontColor: "black",
 									},
 									needsValidation: false,
-									validation : {
-										type : "",
-										condition : "",
-										value : ""
+									validation: {
+										type: "",
+										condition: "",
+										value: "",
 									},
-									subQuestion : false
+									subQuestion: false,
 								},
 							]);
 						}}
@@ -176,10 +159,7 @@ export default function CreateForm() {
 					</Button>
 				</div>
 			</div>
-			<ResponseValidation
-				responseValidation={responseValidation}
-				setResponseValidation={setResponseValidation}
-			/>
+			<ResponseValidation />
 		</div>
 	);
 }

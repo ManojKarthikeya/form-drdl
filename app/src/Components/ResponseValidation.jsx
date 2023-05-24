@@ -12,12 +12,20 @@ import {
 	Switch,
 	TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
-export default function ResponseValidation({
-	responseValidation,
-	setResponseValidation,
-}) {
+export default function ResponseValidation({ fieldDetails, setFormFields }) {
+	const [responseValidation, setResponseValidation] = useState({
+		show: false,
+		id: null,
+		typeOfValidation: false,
+		subQuestion: false,
+		stringSelect: "email",
+		numberSelect: "greater than",
+		lengthSelect: "equal to",
+		valdiationInput: "",
+	});
+
 	return (
 		<Dialog
 			open={responseValidation.show}
@@ -162,7 +170,75 @@ export default function ResponseValidation({
 				>
 					Cancel
 				</Button>
-				<Button>Save</Button>
+				<Button
+					onClick={() => {
+						setFormFields((item) => {
+							if (fieldDetails.id === item.id) {
+								if (fieldDetails.subQuestion) {
+									return {
+										...item,
+										subQuestion: {
+											...item.subQuestion,
+											needsValidation:
+												responseValidation.typeOfValidation
+													? true
+													: false,
+											validation:
+												responseValidation.typeOfValidation
+													? {
+															type: responseValidation.typeOfValidation,
+															value: responseValidation.valdiationInput,
+															condition:
+																responseValidation.typeOfValidation ===
+																"string"
+																	? responseValidation.stringSelect
+																	: responseValidation.typeOfValidation ===
+																	  "number"
+																	? responseValidation.numberSelect
+																	: responseValidation.lengthSelect,
+													  }
+													: {
+															type: "",
+															condition: "",
+															value: "",
+													  },
+										},
+									};
+								} else {
+									return {
+										...item,
+										needsValidation:
+											responseValidation.typeOfValidation
+												? true
+												: false,
+										validation:
+											responseValidation.typeOfValidation
+												? {
+														type: responseValidation.typeOfValidation,
+														value: responseValidation.valdiationInput,
+														condition:
+															responseValidation.typeOfValidation ===
+															"string"
+																? responseValidation.stringSelect
+																: responseValidation.typeOfValidation ===
+																  "number"
+																? responseValidation.numberSelect
+																: responseValidation.lengthSelect,
+												  }
+												: {
+														type: "",
+														condition: "",
+														value: "",
+												  },
+									};
+								}
+							}
+							return item;
+						});
+					}}
+				>
+					Save
+				</Button>
 			</DialogActions>
 		</Dialog>
 	);

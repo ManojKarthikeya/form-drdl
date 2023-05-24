@@ -6,7 +6,7 @@ import {
 	IconButton,
 	TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import TuneIcon from "@mui/icons-material/Tune";
 import AddIcon from "@mui/icons-material/Add";
@@ -102,7 +102,7 @@ export default function QuestionCard({
 						<div
 							style={{ marginLeft: "auto", paddingLeft: "15px" }}
 						>
-							<IconButton onClick={handleSettingsClick}>
+							<IconButton>
 								<Settings color="action" />
 							</IconButton>
 							<IconButton
@@ -158,7 +158,7 @@ export default function QuestionCard({
 							>
 								<TextField
 									size="small"
-									label="Field Name"
+									label="Question"
 									margin="dense"
 									style={{ width: "260px" }}
 									value={formField.subQuestion.question}
@@ -189,7 +189,7 @@ export default function QuestionCard({
 								}}
 							>
 								<IconButton>
-									<TuneIcon color="action" />
+									<Settings color="action" />
 								</IconButton>
 								<IconButton
 									onClick={() => {
