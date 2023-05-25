@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QuestionCard from "../Components/QuestionCard";
 import {
 	AppBar,
@@ -20,6 +20,12 @@ export default function CreateForm() {
 	const [formDescription, setFormDescription] = useState("");
 	const [formFields, setFormFields] = useState([]);
 	const [selected, setSelected] = useState([]);
+	const [isPrintPreviewVisible, setPrintPreviewVisible] = useState(false);
+	
+	const handlePrintPreviewClick = () => {
+    	setPrintPreviewVisible(true);
+    	window.print(); // Trigger print directly
+  };
 
 	
 
@@ -55,7 +61,7 @@ export default function CreateForm() {
 						/>
 					</IconButton>
 					<IconButton>
-						<PrintIcon
+						<PrintIcon onClick={handlePrintPreviewClick}
 							style={{ fontSize: "28px", color: "white" }}
 							color="white"
 						/>
