@@ -3,18 +3,57 @@ const mongoose = require("mongoose");
 const formSchema = new mongoose.Schema(
 	{
 		name: { type: String, required: true },
-		type : {type : String, required: true},
-			
+		description: { type: String },
 		fields: {
 			type: [
 				{
-					key: String,
-					required: Boolean,
-					keyStyles: {
+					question: String,
+					isRequired: Boolean,
+					questionStyles: {
 						underlined: Boolean,
 						italic: Boolean,
 						bold: Boolean,
 						fontSize: Number,
+						fontFamily: String,
+						color: String,
+					},
+					responseStyles: {
+						underlined: Boolean,
+						italic: Boolean,
+						bold: Boolean,
+						fontSize: Number,
+						fontFamily: String,
+						color: String,
+					},
+					validation: {
+						type: String,
+						condition: String,
+						value: String,
+					},
+					subQuestion: {
+						question: String,
+						isRequired: Boolean,
+						questionStyles: {
+							underlined: Boolean,
+							italic: Boolean,
+							bold: Boolean,
+							fontSize: Number,
+							fontFamily: String,
+							color: String,
+						}, 
+						responseStyles: {
+							underlined: Boolean,
+							italic: Boolean,
+							bold: Boolean,
+							fontSize: Number,
+							fontFamily: String,
+							color: String,
+						},
+						validation: {
+							type: String,
+							condition: String,
+							value: String,
+						},
 					},
 				},
 			],

@@ -1,37 +1,48 @@
 import { Button } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Add, InsertDriveFile, InsertDriveFileOutlined } from "@mui/icons-material";
 
 export default function Home() {
 	const navigate = useNavigate();
 	return (
-		<div>
+		<div
+			style={{
+				position: "absolute",
+				left: "50%",
+				top: "50%",
+				transform: "translate(-50%, -50%)",
+			}}
+		>
 			<Button
 				variant="outlined"
 				onClick={() => {
 					navigate("/responses");
 				}}
-				style={{ marginRight: "7px" }}
+				style={{ marginBottom: "7px" }}
 			>
 				View Form Responses
 			</Button>
-			<Button
+			<br />
+			<Button startIcon={<InsertDriveFileOutlined />}
 				variant="outlined"
 				onClick={() => {
 					navigate("/forms");
 				}}
-				style={{ marginRight: "7px" }}
+				style={{ marginBottom: "7px" }}
 			>
-				Fill a form
+				View Forms
 			</Button>
+			<br />
 			<Button
+				startIcon={<Add />}
 				variant="outlined"
-				style={{ marginRight: "7px" }}
+				style={{ marginBottom: "7px" }}
 				onClick={() => {
 					navigate("/form/create");
 				}}
 			>
-				Build a form from scratch
+				Create form
 			</Button>
 		</div>
 	);

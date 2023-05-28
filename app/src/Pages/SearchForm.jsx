@@ -4,6 +4,7 @@ import axiosInstance from "../Helpers/axios";
 import { GET_ALL_FORMS } from "../Helpers/url_helper";
 import {
 	Avatar,
+	CircularProgress,
 	IconButton,
 	List,
 	ListItem,
@@ -15,6 +16,7 @@ import {
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
+import Error from "./Error";
 
 export default function SearchForm() {
 	const navigate = useNavigate();
@@ -22,8 +24,24 @@ export default function SearchForm() {
 		axiosInstance.get(GET_ALL_FORMS).then((res) => res.data)
 	);
 	if (status === "loading") {
-		return <div>Loading....</div>;
+		return (
+			<div
+				style={{
+					position: "absolute",
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			>
+				<CircularProgress />
+			</div>
+		);
 	}
+
+	if (error) {
+		return <Error />;
+	}
+
 	return (
 		<div>
 			<List>
@@ -34,8 +52,16 @@ export default function SearchForm() {
 							key={index}
 							sx={{ width: "600px" }}
 							secondaryAction={
-								<IconButton edge="end" aria-label="delete">
-									<EditIcon />
+								<IconButton
+									edge="end"
+									aria-label="delete"
+									onClick={() => {
+										navigate("/form/create", {
+											state: { form },
+										});
+									}}
+								>
+									<EditIcon style={{fontSize : "28px"}} />
 								</IconButton>
 							}
 						>
