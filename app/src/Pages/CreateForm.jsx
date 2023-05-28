@@ -20,6 +20,7 @@ import { CREATE_FROM } from "../Helpers/url_helper";
 import { useLocation } from "react-router-dom";
 import StylingDrawer from "../Components/StylingDrawer";
 
+
 export default function CreateForm() {
 	const templateFormdata = useLocation();
 	const mutation = useMutation("form", (newForm) =>
@@ -67,12 +68,15 @@ export default function CreateForm() {
 	const [showStylingDrawer, setShowStylingDrawer] = useState(false);
 	const [isPrintPreviewVisible, setPrintPreviewVisible] = useState(false);
 
+
 	const handlePrintPreviewClick = () => {
 		setPrintPreviewVisible(true);
 		window.print(); // Trigger print directly
 	};
 
 	const handleSettingsClick = (id, subQuestion) => {};
+
+
 
 	return (
 		<div style={{ marginTop: "65px" }}>
@@ -219,7 +223,7 @@ export default function CreateForm() {
 					>
 						Add a field
 					</Button>
-					<Button startIcon={<Add />} onClick={addTableHandler}>Add a Table</Button>
+					
 				</div>
 			</div>
 			<ResponseValidation />
@@ -230,6 +234,7 @@ export default function CreateForm() {
 				setSelected={setSelected}
 				setFormFields={setFormFields}
 			/>
+
 		</div>
 	);
 }

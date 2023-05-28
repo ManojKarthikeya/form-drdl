@@ -15,6 +15,7 @@ import UserIdResponse from "./Pages/UseridResponse";
 import Login from "./Pages/Login";
 import CreateForm from "./Pages/CreateForm";
 import FillForm from "./Pages/FillForm";
+import CreateTable from "./Pages/CreateTable";
 
 const router = createBrowserRouter([
 	{
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
 	{
 		path: "/home",
 		element: <Home />,
+	},
+	{
+		path: "/createTable",
+		element: <CreateTable />,
 	},
 	{
 		path: "/responses",
