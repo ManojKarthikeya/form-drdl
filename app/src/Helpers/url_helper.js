@@ -8,3 +8,4 @@ export const GET_ALL_RESPONSES = "api/response";
 // FORM APIS
 export const GET_ALL_FORMS = "api/form"
 export const GET_FORM = "api/form/"
+export const CREATE_FROM = "api/form"

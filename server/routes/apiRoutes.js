@@ -36,13 +36,13 @@ router.get("/response", (req, res) => {
 
 router.post("/response", (req, res) => {
 	const { userId, fields, formName, formId } = req.body;
-	console.log(req.body)
+	console.log(req.body);
 	response
 		.create({
 			userId: userId,
 			fields: fields,
-			formName : formName,
-			formId : formId
+			formName: formName,
+			formId: formId,
 		})
 		.then(() => {
 			res.send("Created Successfully!");
@@ -52,33 +52,31 @@ router.post("/response", (req, res) => {
 // FORMS
 
 router.get("/form", (req, res) => {
-	form
-	.find({})
-	.exec()
-	.then((responseObject) => res.send(JSON.stringify(responseObject)));
-})
+	form.find({})
+		.exec()
+		.then((responseObject) => res.send(JSON.stringify(responseObject)));
+});
 
 router.get("/form/:id", (req, res) => {
 	id = req.params.id;
 	if (!ObjectId.isValid(id)) {
 		res.send({});
 	} else {
-		form
-			.findById(id)
+		form.findById(id)
 			.exec()
 			.then((responseObject) => res.send(JSON.stringify(responseObject)));
 	}
-})
+});
 
 router.post("/form", (req, res) => {
-	const {name, fields} = req.body;
+	const { name, fields, description } = req.body;
 	form.create({
-		name : name,
-		fields : fields
-	}).then((news)=>{
-		console.log(news)
-		res.send(news)
-	})
-})
+		name: name,
+		description: description,
+		fields: fields,
+	}).then((form) => {
+		res.send(form);
+	});
+});
 
 module.exports = router;

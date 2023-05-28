@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import TuneIcon from "@mui/icons-material/Tune";
 import AddIcon from "@mui/icons-material/Add";
 import { Settings } from "@mui/icons-material";
 
@@ -81,7 +80,39 @@ export default function QuestionCard({
 										...formFields,
 									]);
 								}}
-								autoCapitalize="sentences"
+								InputLabelProps={{
+									style: {
+										fontSize:
+											formField.questionStyles.fontSize,
+									},
+								}}
+								inputProps={{
+									style: {
+										fontSize:
+											formField.questionStyles.fontSize,
+										fontWeight: formField.questionStyles
+											.bold
+											? "bold"
+											: "unset",
+										textDecoration: formField.questionStyles
+											.underlined
+											? "underline"
+											: "",
+										fontStyle: formField.questionStyles
+											.italic
+											? "italic"
+											: "normal",
+										fontFamily: formField.questionStyles
+											.fontFamily
+											? formField.questionStyles
+													.fontFamily
+											: "",
+										color: formField.questionStyles.color
+											? formField.questionStyles.color
+											: "black",
+									},
+								}}
+								variant="standard"
 							/>
 							<TextField
 								variant="standard"
@@ -96,6 +127,32 @@ export default function QuestionCard({
 									maxWidth: formField.subQuestion
 										? "230px"
 										: "305px",
+								}}
+								inputProps={{
+									style: {
+										fontSize:
+											formField.responseStyles.fontSize,
+										fontWeight: formField.responseStyles
+											.bold
+											? "bold"
+											: "unset",
+										textDecoration: formField.responseStyles
+											.underlined
+											? "underline"
+											: "",
+										fontStyle: formField.responseStyles
+											.italic
+											? "italic"
+											: "normal",
+										fontFamily: formField.responseStyles
+											.fontFamily
+											? formField.responseStyles
+													.fontFamily
+											: "",
+										color: formField.responseStyles.color
+											? formField.responseStyles.color
+											: "black",
+									},
 								}}
 							/>
 						</div>
@@ -147,7 +204,26 @@ export default function QuestionCard({
 								alignItems: "center",
 							}}
 						>
-							<Checkbox />
+							<Checkbox
+								checked={selected.includes(
+									formField.subQuestion.id
+								)}
+								onChange={() => {
+									selected.includes(formField.subQuestion.id)
+										? setSelected(() =>
+												selected.filter(
+													(id) =>
+														id !==
+														formField.subQuestion.id
+												)
+										  )
+										: setSelected([
+												...selected,
+												formField.subQuestion.id,
+										  ]);
+								}}
+								inputProps={{ "aria-label": "controlled" }}
+							/>
 							<div
 								style={{
 									display: "flex",
@@ -169,15 +245,85 @@ export default function QuestionCard({
 											...formFields,
 										]);
 									}}
+									variant="standard"
+									InputLabelProps={{
+										style: {
+											fontSize:
+												formField.subQuestion
+													.questionStyles.fontSize,
+										},
+									}}
+									inputProps={{
+										style: {
+											fontSize:
+												formField.subQuestion
+													.questionStyles.fontSize,
+											fontWeight: formField.subQuestion
+												.questionStyles.bold
+												? "bold"
+												: "unset",
+											textDecoration: formField
+												.subQuestion.questionStyles
+												.underlined
+												? "underline"
+												: "",
+											fontStyle: formField.subQuestion
+												.questionStyles.italic
+												? "italic"
+												: "normal",
+											fontFamily: formField.subQuestion
+												.questionStyles.fontFamily
+												? formField.subQuestion
+														.questionStyles
+														.fontFamily
+												: "",
+											color: formField.subQuestion
+												.questionStyles.color
+												? formField.subQuestion
+														.questionStyles.color
+												: "black",
+										},
+									}}
 								/>
 								<TextField
 									variant="standard"
-									value={"Response goes here."}
+									value="Response goes here."
 									disabled={true}
 									margin="dense"
 									style={{
 										width: "230px",
 										marginLeft: "auto",
+									}}
+									inputProps={{
+										style: {
+											fontSize:
+												formField.subQuestion
+													.responseStyles.fontSize,
+											fontWeight: formField.subQuestion
+												.responseStyles.bold
+												? "bold"
+												: "unset",
+											textDecoration: formField
+												.subQuestion.responseStyles
+												.underlined
+												? "underline"
+												: "",
+											fontStyle: formField.subQuestion
+												.responseStyles.italic
+												? "italic"
+												: "normal",
+											fontFamily: formField.subQuestion
+												.responseStyles.fontFamily
+												? formField.subQuestion
+														.responseStyles
+														.fontFamily
+												: "",
+											color: formField.subQuestion
+												.responseStyles.color
+												? formField.subQuestion
+														.responseStyles.color
+												: "black",
+										},
 									}}
 								/>
 							</div>
@@ -224,20 +370,14 @@ export default function QuestionCard({
 													underlined: false,
 													italic: false,
 													bold: false,
-													fontColor: "black",
+													color: "black",
 												},
 												responseStyles: {
 													fontSize: 16,
 													underlined: false,
 													italic: false,
 													bold: false,
-													fontColor: "black",
-												},
-												needsValidation: false,
-												validation: {
-													type: "",
-													condition: "",
-													value: "",
+													color: "black",
 												},
 											},
 										};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionCard from "../Components/QuestionCard";
 import {
 	AppBar,
@@ -14,16 +14,59 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Add, Palette, Visibility } from "@mui/icons-material";
 import PrintIcon from "@mui/icons-material/Print";
 import ResponseValidation from "../Components/ResponseValidation";
+import { useMutation } from "react-query";
+import axiosInstance from "../Helpers/axios";
+import { CREATE_FROM } from "../Helpers/url_helper";
+import { useLocation } from "react-router-dom";
+import StylingDrawer from "../Components/StylingDrawer";
 
 export default function CreateForm() {
-	const [formName, setFormName] = useState("Untitled Form");
-	const [formDescription, setFormDescription] = useState("");
-	const [formFields, setFormFields] = useState([]);
+	const templateFormdata = useLocation();
+	const mutation = useMutation("form", (newForm) =>
+		axiosInstance.post(CREATE_FROM, newForm)
+	);
+	const [formName, setFormName] = useState(
+		templateFormdata.state
+			? templateFormdata.state.form.name
+			: "Untitled Form"
+	);
+	const [formDescription, setFormDescription] = useState(
+		templateFormdata.state ? templateFormdata.state.form.description : ""
+	);
+	const [formFields, setFormFields] = useState(
+		templateFormdata.state
+			? templateFormdata.state.form.fields.map((item) => ({
+					...item,
+					id: Date.now() * Math.random(),
+			  }))
+			: [
+					{
+						id: Date.now() * Math.random(),
+						type: "standard",
+						question: "",
+						isRequired: "false",
+						questionStyles: {
+							fontSize: 16,
+							underlined: false,
+							italic: false,
+							bold: false,
+							color: "black",
+						},
+						responseStyles: {
+							fontSize: 16,
+							underlined: false,
+							italic: false,
+							bold: false,
+							color: "black",
+						},
+						subQuestion: false,
+					},
+			  ]
+	);
 	const [selected, setSelected] = useState([]);
-
-	
-
+	const [showStylingDrawer, setShowStylingDrawer] = useState(false);
 	const handleSettingsClick = (id, subQuestion) => {};
+	
 	return (
 		<div style={{ marginTop: "65px" }}>
 			<AppBar position="fixed" elevation={2} color="primary">
@@ -38,7 +81,11 @@ export default function CreateForm() {
 					>
 						{formName}
 					</Typography>
-					<IconButton>
+					<IconButton
+						onClick={() => {
+							setShowStylingDrawer(!showStylingDrawer);
+						}}
+					>
 						<Palette
 							style={{
 								fontSize: "28px",
@@ -60,7 +107,18 @@ export default function CreateForm() {
 							color="white"
 						/>
 					</IconButton>
-					<Button sx={{ borderColor: "white", color: "white" }}>
+					<Button
+						sx={{ borderColor: "white", color: "white" }}
+						onClick={() => {
+							if (formName && formDescription) {
+								mutation.mutate({
+									name: formName,
+									description: formDescription,
+									fields: formFields,
+								});
+							}
+						}}
+					>
 						Save
 					</Button>
 				</Toolbar>
@@ -126,7 +184,7 @@ export default function CreateForm() {
 							setFormFields([
 								...formFields,
 								{
-									id: Date.now(),
+									id: Date.now() * Math.random(),
 									type: "standard",
 									question: "",
 									isRequired: "false",
@@ -135,7 +193,8 @@ export default function CreateForm() {
 										underlined: false,
 										italic: false,
 										bold: false,
-										fontColor: "black",
+										color: "black",
+										fontFamily: "'Roboto', sans-serif",
 									},
 									responseStyles: {
 										fontSize: 16,
@@ -143,12 +202,7 @@ export default function CreateForm() {
 										italic: false,
 										bold: false,
 										fontColor: "black",
-									},
-									needsValidation: false,
-									validation: {
-										type: "",
-										condition: "",
-										value: "",
+										fontFamily: `'Roboto', sans-serif`,
 									},
 									subQuestion: false,
 								},
@@ -160,6 +214,13 @@ export default function CreateForm() {
 				</div>
 			</div>
 			<ResponseValidation />
+			<StylingDrawer
+				showStylingDrawer={showStylingDrawer}
+				setShowStylingDrawer={setShowStylingDrawer}
+				selected={selected}
+				setSelected={setSelected}
+				setFormFields={setFormFields}
+			/>
 		</div>
 	);
 }
