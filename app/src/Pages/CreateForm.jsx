@@ -65,8 +65,15 @@ export default function CreateForm() {
 	);
 	const [selected, setSelected] = useState([]);
 	const [showStylingDrawer, setShowStylingDrawer] = useState(false);
+	const [isPrintPreviewVisible, setPrintPreviewVisible] = useState(false);
+
+	const handlePrintPreviewClick = () => {
+		setPrintPreviewVisible(true);
+		window.print(); // Trigger print directly
+	};
+
 	const handleSettingsClick = (id, subQuestion) => {};
-	
+
 	return (
 		<div style={{ marginTop: "65px" }}>
 			<AppBar position="fixed" elevation={2} color="primary">
@@ -103,6 +110,7 @@ export default function CreateForm() {
 					</IconButton>
 					<IconButton>
 						<PrintIcon
+							onClick={handlePrintPreviewClick}
 							style={{ fontSize: "28px", color: "white" }}
 							color="white"
 						/>
