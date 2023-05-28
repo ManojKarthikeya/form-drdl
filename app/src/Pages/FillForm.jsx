@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_RESPONSE, GET_FORM } from "../Helpers/url_helper";
@@ -21,8 +21,9 @@ import ResponseCard from "../Components/ResponseCard";
 
 export default function FillForm() {
 	const { formId } = useParams();
+	const navigate = useNavigate();
 	const [formFields, setFormFields] = useState([]);
-	const [snackbar, setSnackBar] = useState({ open: false });
+	const [snackbar, setSnackBar] = useState({ open: false, success: false });
 	const { data: formData, status: formStatus } = useQuery(
 		[formId],
 		() => axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data),
@@ -36,8 +37,6 @@ export default function FillForm() {
 	const mutation = useMutation("responses", (newResponse) =>
 		axiosInstance.post(CREATE_RESPONSE, newResponse)
 	);
-
-	console.log(formFields);
 
 	if (formStatus === "loading") {
 		return (
@@ -82,15 +81,27 @@ export default function FillForm() {
 					<Button
 						sx={{ borderColor: "white", color: "white" }}
 						onClick={() => {
-							mutation.mutate({
-								userId: 123,
-								formId: formData._id,
-								fields: formFields.map((item) => ({
-									question: item.question,
-									response: item.response,
-									subQuestion: item.subQuestion,
-								})),
-							});
+							mutation.mutate(
+								{
+									userId: 123,
+									formId: formData._id,
+									fields: formFields.map((item) => ({
+										question: item.question,
+										response: item.response,
+										subQuestion: item.subQuestion,
+									})),
+								},
+								{
+									onSuccess: (data) => {
+										setSnackBar({
+											...snackbar,
+											show: true,
+											success: true,
+										});
+										navigate(`/response/${data.data._id}`);
+									},
+								}
+							);
 						}}
 					>
 						Submit
