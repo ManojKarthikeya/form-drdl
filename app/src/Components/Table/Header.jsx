@@ -36,7 +36,7 @@ export default function Header({
         setSortBy([{id: id, desc: false}]);
         setExpanded(false);
       },
-      icon: <ArrowUpwardIcon />,
+      icon: <ArrowUpwardIcon fontSize="small"/>,
       label: "Sort ascending"
     },
     {
@@ -45,7 +45,7 @@ export default function Header({
         setSortBy([{id: id, desc: true}]);
         setExpanded(false);
       },
-      icon: <ArrowDownwardIcon />,
+      icon: <ArrowDownwardIcon fontSize="small"/>,
       label: "Sort descending"
     },
     {
@@ -54,7 +54,7 @@ export default function Header({
         dataDispatch({type: "add_column_to_left", columnId: id, focus: false});
         setExpanded(false);
       },
-      icon: <ArrowBackIcon />,
+      icon: <ArrowBackIcon fontSize="small"/>,
       label: "Insert left"
     },
     {
@@ -63,7 +63,7 @@ export default function Header({
         dataDispatch({type: "add_column_to_right", columnId: id, focus: false});
         setExpanded(false);
       },
-      icon: <ArrowForwardIcon />,
+      icon: <ArrowForwardIcon fontSize="small"/>,
       label: "Insert right"
     },
     {
@@ -72,7 +72,7 @@ export default function Header({
         dataDispatch({type: "delete_column", columnId: id});
         setExpanded(false);
       },
-      icon: <DeleteIcon />,
+      icon: <DeleteIcon fontSize="small"/>,
       label: "Delete"
     }
   ];
@@ -93,7 +93,7 @@ export default function Header({
         setShowType(false);
         setExpanded(false);
       },
-      icon: <FormatAlignLeftIcon />,
+      icon: <FormatAlignLeftIcon fontSize="small"/>,
       label: "Text"
     },
     {
@@ -102,7 +102,7 @@ export default function Header({
         setShowType(false);
         setExpanded(false);
       },
-      icon: <TagIcon />,
+      icon: <TagIcon fontSize="small"/>,
       label: "Number"
     }
   ];
@@ -110,10 +110,10 @@ export default function Header({
   let propertyIcon;
   switch (dataType) {
     case "number":
-      propertyIcon = <TagIcon />;
+      propertyIcon = <TagIcon fontSize="small"/>;
       break;
     case "text":
-      propertyIcon = <FormatAlignLeftIcon />;
+      propertyIcon = <FormatAlignLeftIcon fontSize="small"/>;
       break;
     // case "select":
     //   propertyIcon = <FilterNoneIcon />;

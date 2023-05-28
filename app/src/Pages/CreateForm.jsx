@@ -206,7 +206,6 @@ export default function CreateForm() {
 					>
 						Add a field
 					</Button>
-					<Button startIcon={<Add />}>Add a Table</Button>
 				</div>
 			</div>
 			<ResponseValidation />

@@ -92,7 +92,7 @@ export default function Table({columns, data, dispatch: dataDispatch, skipReset}
           })}
           <div className='tr add-row' onClick={() => dataDispatch({type: "add_row"})}>
             <span className='svg-icon svg-gray' style={{marginRight: 4}}>
-              <AddIcon />
+              <AddIcon fontSize="small"/>
             </span>
             New
           </div>

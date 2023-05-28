@@ -12,6 +12,7 @@ import UserIdResponse from "./Pages/UseridResponse";
 import Login from "./Pages/Login";
 import CreateForm from "./Pages/CreateForm";
 import FillForm from "./Pages/FillForm";
+import CreateTable from "./Pages/CreateTable";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
