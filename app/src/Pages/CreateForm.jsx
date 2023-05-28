@@ -14,16 +14,23 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Add, Palette, Visibility } from "@mui/icons-material";
 import PrintIcon from "@mui/icons-material/Print";
 import ResponseValidation from "../Components/ResponseValidation";
+import StylingDrawer from "../Components/StylingDrawer";
+import FinalTable from "../Components/Table/FinalTable";
 
 export default function CreateForm() {
 	const [formName, setFormName] = useState("Untitled Form");
 	const [formDescription, setFormDescription] = useState("");
 	const [formFields, setFormFields] = useState([]);
 	const [selected, setSelected] = useState([]);
-
+  const [showStylingDrawer,setShowStylingDrawer] = useState(false);
+	const [showTable, setShowTable] = useState(false);
 	
 
 	const handleSettingsClick = (id, subQuestion) => {};
+	 
+	const addTableHandler = () =>{
+		setShowTable(true);
+	}
 	return (
 		<div style={{ marginTop: "65px" }}>
 			<AppBar position="fixed" elevation={2} color="primary">
@@ -38,7 +45,7 @@ export default function CreateForm() {
 					>
 						{formName}
 					</Typography>
-					<IconButton>
+					<IconButton onClick={()=>{setShowStylingDrawer(!showStylingDrawer)}}>
 						<Palette
 							style={{
 								fontSize: "28px",
@@ -157,9 +164,12 @@ export default function CreateForm() {
 					>
 						Add a field
 					</Button>
+					<Button startIcon={<Add />} onClick={addTableHandler}>Add a Table</Button>
 				</div>
 			</div>
 			<ResponseValidation />
+			{showTable && <FinalTable/>}
+      <StylingDrawer showStylingDrawer={showStylingDrawer} setShowStylingDrawer={setShowStylingDrawer}/>
 		</div>
 	);
 }
