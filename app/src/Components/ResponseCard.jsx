@@ -8,9 +8,9 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 				variant="outlined"
 				sx={{
 					borderLeft: `6px solid #29b6f6`,
-					width: questionEntry.subQuestion ? "440px" : "530px",
+					flexGrow: 1,
 					marginBottom: "10px",
-					marginRight: questionEntry.subQuestion ? "10px" : "370px",
+					marginRight: questionEntry.subQuestion ? "10px" : "0px",
 				}}
 			>
 				<CardContent
@@ -25,6 +25,7 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 							display: "flex",
 							flexDirection: "column",
 							marginLeft: "10px",
+							width : "75%"
 						}}
 					>
 						<Typography
@@ -50,7 +51,7 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 									? questionEntry.questionStyles.fontFamily
 									: "",
 							}}
-							style={{ marginBottom: "18px" }}
+							style={{ marginBottom: "5px" }}
 						>
 							{questionEntry.question}
 						</Typography>
@@ -59,9 +60,6 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 							size="small"
 							placeholder="Answer"
 							style={{
-								width: questionEntry.subQuestion
-									? "330px"
-									: "400px",
 								marginLeft: "20px",
 							}}
 							multiline={questionEntry.subQuestion ? true : false}
@@ -107,7 +105,7 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 					variant="outlined"
 					sx={{
 						borderLeft: `6px solid #29b6f6`,
-						width: "440px",
+						width: "50%",
 						marginBottom: "10px",
 					}}
 				>
@@ -123,6 +121,7 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 								display: "flex",
 								flexDirection: "column",
 								marginLeft: "10px",
+								width : "70%"
 							}}
 						>
 							<Typography
@@ -153,7 +152,7 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 												.questionStyles.color
 										: "black",
 								}}
-								style={{ marginBottom: "18px" }}
+								style={{ marginBottom: "5px" }}
 							>
 								{questionEntry.subQuestion.question}
 							</Typography>
@@ -161,8 +160,8 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 								variant="standard"
 								size="small"
 								placeholder="Answer"
+								fullWidth
 								style={{
-									width: "335px",
 									marginLeft: "20px",
 								}}
 								value={questionEntry.subQuestion.response}

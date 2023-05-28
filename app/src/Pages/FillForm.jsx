@@ -1,15 +1,18 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_RESPONSE, GET_FORM } from "../Helpers/url_helper";
 import {
+	Alert,
 	AppBar,
 	Button,
 	Card,
 	CardContent,
 	CircularProgress,
+	Container,
 	IconButton,
+	Snackbar,
 	Toolbar,
 	Typography,
 } from "@mui/material";
@@ -19,6 +22,7 @@ import ResponseCard from "../Components/ResponseCard";
 export default function FillForm() {
 	const { formId } = useParams();
 	const [formFields, setFormFields] = useState([]);
+	const [snackbar, setSnackBar] = useState({ open: false });
 	const { data: formData, status: formStatus } = useQuery(
 		[formId],
 		() => axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data),
@@ -93,22 +97,23 @@ export default function FillForm() {
 					</Button>
 				</Toolbar>
 			</AppBar>
-			<div
+			<Container
+				maxWidth="md"
 				style={{
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
 				}}
 			>
 				<Card
 					variant="outlined"
 					style={{
 						borderLeft: "6px solid #1976d2",
-						margin: "10px",
-						width: "902px",
+						marginTop: "10px",
+						marginBottom: "10px",
+						width: "100%",
 					}}
 				>
-					<CardContent style={{ paddingLeft: "20px" }}>
+					<CardContent style={{ paddingLeft: "15px" }}>
 						<Typography variant="h2">{formData.name}</Typography>
 						{formData.description ? (
 							<Typography variant="body2">
@@ -126,7 +131,25 @@ export default function FillForm() {
 						/>
 					);
 				})}
-			</div>
+			</Container>
+			<Snackbar
+				open={snackbar.open}
+				onClose={(event, reason) => {
+					if (reason === "clickaway") {
+						return;
+					}
+					setSnackBar({ ...snackbar, open: false });
+				}}
+				autoHideDuration={3000}
+			>
+				{snackbar.success ? (
+					<Alert severity="success" sx={{ width: "100%" }}>
+						This is a success message!
+					</Alert>
+				) : (
+					<Alert severity="error">This is an error message!</Alert>
+				)}
+			</Snackbar>
 		</div>
 	);
 }
