@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
@@ -8,6 +8,7 @@ import {
 	Button,
 	Card,
 	CardContent,
+	CircularProgress,
 	IconButton,
 	Toolbar,
 	Typography,
@@ -18,21 +19,35 @@ import ResponseCard from "../Components/ResponseCard";
 export default function FillForm() {
 	const { formId } = useParams();
 	const [formFields, setFormFields] = useState([]);
-	const form = useQuery([formId], () =>
-		axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data)
+	const { data: formData, status: formStatus } = useQuery(
+		[formId],
+		() => axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data),
+		{
+			onSuccess: (result) => {
+				setFormFields(result.fields);
+			},
+		}
 	);
+
 	const mutation = useMutation("responses", (newResponse) =>
 		axiosInstance.post(CREATE_RESPONSE, newResponse)
 	);
-	useEffect(() => {
-		if (form.data && formFields.length === 0) {
-			setFormFields(
-				form.data.fields.map((item) => ({ ...item, id: Date.now() }))
-			);
-		}
-	}, [form, formFields]);
-	if (form.status === "loading") {
-		return <div>Loading...</div>;
+
+	console.log(formFields);
+
+	if (formStatus === "loading") {
+		return (
+			<div
+				style={{
+					position: "absolute",
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			>
+				<CircularProgress />
+			</div>
+		);
 	}
 	return (
 		<div style={{ marginTop: "65px" }}>
@@ -46,7 +61,7 @@ export default function FillForm() {
 						component="div"
 						sx={{ flexGrow: 1 }}
 					>
-						{form.data.name}
+						{formData.name}
 					</Typography>
 					<IconButton>
 						<Visibility
@@ -65,7 +80,7 @@ export default function FillForm() {
 						onClick={() => {
 							mutation.mutate({
 								userId: 123,
-								formId: form.data._id,
+								formId: formData._id,
 								fields: formFields.map((item) => ({
 									question: item.question,
 									response: item.response,
@@ -94,10 +109,10 @@ export default function FillForm() {
 					}}
 				>
 					<CardContent style={{ paddingLeft: "20px" }}>
-						<Typography variant="h2">{form.data.name}</Typography>
-						{form.data.description ? (
+						<Typography variant="h2">{formData.name}</Typography>
+						{formData.description ? (
 							<Typography variant="body2">
-								{form.data.description}
+								{formData.description}
 							</Typography>
 						) : null}
 					</CardContent>

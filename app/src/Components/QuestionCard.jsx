@@ -12,7 +12,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { Settings } from "@mui/icons-material";
 
 export default function QuestionCard({
-	handleSettingsClick,
 	formField,
 	setFormFields,
 	setSelected,

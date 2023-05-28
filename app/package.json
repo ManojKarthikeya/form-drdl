@@ -23,6 +23,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "react-to-print": "^2.14.12",
     "react-table": "^7.8.0",
     "styled-components": "^6.0.0-rc.1",
     "web-vitals": "^2.1.0",
