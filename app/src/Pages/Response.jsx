@@ -1,26 +1,61 @@
-import React, { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useMemo, useRef } from "react";
+import { useParams } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { useQuery, useQueryClient } from "react-query";
-import { GET_FORM } from "../Helpers/url_helper";
-import axiosInstance from "../Helpers/axios";
+import { useQuery } from "react-query";
 import {
 	AppBar,
-	Button,
 	CircularProgress,
+	Container,
 	IconButton,
 	Toolbar,
 } from "@mui/material";
 import { InsertDriveFile, Print } from "@mui/icons-material";
+import ResponseCompleteCard from "../Components/ResponseCompleteCard";
+import { FIND_RESPONSE_BY_ID, GET_FORM } from "../Helpers/url_helper";
+import axiosInstance from "../Helpers/axios";
+import ReactToPrint from "react-to-print";
 
 export default function Response() {
-	const data = useLocation();
-	const form = useQuery([data.state.formId], () =>
-		axiosInstance(`${GET_FORM}${data.state.formId}`).then((res) => res.data)
+	let ResponseRef = useRef(null);
+	const { responseId } = useParams();
+	const { data: responseData, status: responseStatus } = useQuery(
+		["responses", responseId],
+		() =>
+			axiosInstance(`${FIND_RESPONSE_BY_ID}${responseId}`).then(
+				(res) => res.data
+			)
 	);
-	if (form.status === "loading") {
+	const formId = responseData?.formId;
+	const { data: formData, status: formStatus } = useQuery(
+		["forms", formId],
+		() => axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data),
+		{ enabled: !!formId }
+	);
+	const responseFields = useMemo(() => {
+		if (
+			responseData &&
+			formData &&
+			formData.fields &&
+			responseData.fields
+		) {
+			return formData.fields.map((field, index) => ({
+				...field,
+				response: responseData.fields[index].response,
+				subQuestion: field.subQuestion
+					? {
+							...field.subQuestion,
+							response:
+								responseData.fields[index].subQuestion.response,
+					  }
+					: false,
+			}));
+		}
+		return [];
+	}, [responseData, formData]);
+
+	if (responseStatus === "loading" || formStatus === "loading") {
 		return (
 			<div
 				style={{
@@ -36,7 +71,7 @@ export default function Response() {
 	}
 	return (
 		<div style={{ marginTop: "65px" }}>
-			<AppBar position="fixed" elevation={2} color="primary">
+			<AppBar position="fixed" elevation={1} color="primary">
 				<Toolbar>
 					<InsertDriveFile
 						sx={{ fontSize: "26px", marginRight: "10px" }}
@@ -46,41 +81,48 @@ export default function Response() {
 						component="div"
 						sx={{ flexGrow: 1 }}
 					>
-						{form.data.name}
+						{formData.name}
 					</Typography>
 					<IconButton>
-						<Print
-							style={{ fontSize: "28px", color: "white" }}
-							color="white"
+						<ReactToPrint
+							trigger={() => (
+								<Print
+									style={{ fontSize: "28px", color: "white" }}
+									color="white"
+								/>
+							)}
+							content={() => ResponseRef}
 						/>
 					</IconButton>
 				</Toolbar>
 			</AppBar>
-			<div
+			<Container
+				maxWidth="md"
+				ref={(element) => (ResponseRef = element)}
 				style={{
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
 				}}
 			>
 				<Card
 					variant="outlined"
 					style={{
 						borderLeft: "6px solid #1976d2",
-						margin: "10px",
-						width: "902px",
+						marginTop: "10px",
+						marginBottom: "10px",
+						width: "100%",
 					}}
 				>
 					<CardContent style={{ paddingLeft: "20px" }}>
-						<Typography variant="h2">{form.data.name}</Typography>
-						{form.data.description ? (
-							<Typography variant="body2">
-								{form.data.description}
-							</Typography>
-						) : null}
+						<Typography variant="h3">{formData.name}</Typography>
+						<Typography>{formData.description}</Typography>
 					</CardContent>
 				</Card>
-			</div>
+				{responseFields.map((field) => (
+					<ResponseCompleteCard questionEntry={field} key={field} />
+				))}
+				
+			</Container>
 		</div>
 	);
 }
