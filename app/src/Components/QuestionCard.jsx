@@ -26,10 +26,146 @@ export default function QuestionCard({
 				marginBottom: "10px",
 			}}
 		>
-			<div>
+			<Card
+				variant="outlined"
+				sx={{ borderLeft: `6px solid #29b6f6` }}
+				style={{ flexGrow: "1" }}
+			>
+				<CardContent
+					style={{
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "center",
+					}}
+				>
+					<Checkbox
+						sx={{ padding: "5px" }}
+						checked={selected.includes(formField.id)}
+						onChange={() => {
+							selected.includes(formField.id)
+								? setSelected(() =>
+										selected.filter(
+											(id) => id !== formField.id
+										)
+								  )
+								: setSelected([...selected, formField.id]);
+						}}
+						inputProps={{ "aria-label": "controlled" }}
+					/>
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							alignItems: "center",
+							marginLeft: "20px",
+							flexGrow: "1",
+						}}
+					>
+						<TextField
+							size="small"
+							label="Question"
+							margin="dense"
+							fullWidth
+							value={formField.question}
+							onChange={(event) => {
+								formField.question = event.target.value;
+								setFormFields((formFields) => [...formFields]);
+							}}
+							InputLabelProps={{
+								style: {
+									fontSize: formField.questionStyles.fontSize,
+								},
+							}}
+							inputProps={{
+								style: {
+									fontSize: formField.questionStyles.fontSize,
+									fontWeight: formField.questionStyles.bold
+										? "bold"
+										: "unset",
+									textDecoration: formField.questionStyles
+										.underlined
+										? "underline"
+										: "",
+									fontStyle: formField.questionStyles.italic
+										? "italic"
+										: "normal",
+									fontFamily: formField.questionStyles
+										.fontFamily
+										? formField.questionStyles.fontFamily
+										: "",
+									color: formField.questionStyles.color
+										? formField.questionStyles.color
+										: "black",
+								},
+							}}
+							variant="standard"
+						/>
+						<TextField
+							variant="standard"
+							value={"Response goes here."}
+							disabled={true}
+							margin="dense"
+							fullWidth
+							inputProps={{
+								style: {
+									fontSize: formField.responseStyles.fontSize,
+									fontWeight: formField.responseStyles.bold
+										? "bold"
+										: "unset",
+									textDecoration: formField.responseStyles
+										.underlined
+										? "underline"
+										: "",
+									fontStyle: formField.responseStyles.italic
+										? "italic"
+										: "normal",
+									fontFamily: formField.responseStyles
+										.fontFamily
+										? formField.responseStyles.fontFamily
+										: "",
+									color: formField.responseStyles.color
+										? formField.responseStyles.color
+										: "black",
+								},
+							}}
+						/>
+					</div>
+					<div style={{ marginLeft: "auto", paddingLeft: "15px" }}>
+						<IconButton>
+							<Settings color="action" />
+						</IconButton>
+						<IconButton
+							onClick={() => {
+								if (formField.subQuestion) {
+									setFormFields((formFields) =>
+										formFields.map((item) => {
+											if (item.id === formField.id) {
+												return {
+													...item.subQuestion,
+												};
+											}
+											return item;
+										})
+									);
+								} else {
+									setFormFields((formFields) =>
+										formFields.filter(
+											(item) => item.id !== formField.id
+										)
+									);
+								}
+							}}
+						>
+							<DeleteIcon color="action" />
+						</IconButton>
+					</div>
+				</CardContent>
+			</Card>
+			{formField.subQuestion ? (
 				<Card
 					variant="outlined"
-					sx={{ borderLeft: `6px solid #29b6f6` }}
+					sx={{ borderLeft: `6px solid #4fc3f7` }}
+					style={{ flexGrow: "1" }}
 				>
 					<CardContent
 						style={{
@@ -39,16 +175,22 @@ export default function QuestionCard({
 						}}
 					>
 						<Checkbox
-							sx={{ padding: "5px" }}
-							checked={selected.includes(formField.id)}
+							checked={selected.includes(
+								formField.subQuestion.id
+							)}
 							onChange={() => {
-								selected.includes(formField.id)
+								selected.includes(formField.subQuestion.id)
 									? setSelected(() =>
 											selected.filter(
-												(id) => id !== formField.id
+												(id) =>
+													id !==
+													formField.subQuestion.id
 											)
 									  )
-									: setSelected([...selected, formField.id]);
+									: setSelected([
+											...selected,
+											formField.subQuestion.id,
+									  ]);
 							}}
 							inputProps={{ "aria-label": "controlled" }}
 						/>
@@ -58,130 +200,113 @@ export default function QuestionCard({
 								flexDirection: "column",
 								alignItems: "center",
 								marginLeft: "20px",
+								flexGrow : "1"
 							}}
 						>
 							<TextField
+								fullWidth
 								size="small"
 								label="Question"
 								margin="dense"
-								style={{
-									width: formField.subQuestion
-										? "260px"
-										: "335px",
-									maxWidth: formField.subQuestion
-										? "260px"
-										: "335px",
-								}}
-								value={formField.question}
+								value={formField.subQuestion.question}
 								onChange={(event) => {
-									formField.question = event.target.value;
+									formField.subQuestion.question =
+										event.target.value;
 									setFormFields((formFields) => [
 										...formFields,
 									]);
 								}}
+								variant="standard"
 								InputLabelProps={{
 									style: {
 										fontSize:
-											formField.questionStyles.fontSize,
+											formField.subQuestion.questionStyles
+												.fontSize,
 									},
 								}}
 								inputProps={{
 									style: {
 										fontSize:
-											formField.questionStyles.fontSize,
-										fontWeight: formField.questionStyles
-											.bold
+											formField.subQuestion.questionStyles
+												.fontSize,
+										fontWeight: formField.subQuestion
+											.questionStyles.bold
 											? "bold"
 											: "unset",
-										textDecoration: formField.questionStyles
-											.underlined
+										textDecoration: formField.subQuestion
+											.questionStyles.underlined
 											? "underline"
 											: "",
-										fontStyle: formField.questionStyles
-											.italic
+										fontStyle: formField.subQuestion
+											.questionStyles.italic
 											? "italic"
 											: "normal",
-										fontFamily: formField.questionStyles
-											.fontFamily
-											? formField.questionStyles
-													.fontFamily
+										fontFamily: formField.subQuestion
+											.questionStyles.fontFamily
+											? formField.subQuestion
+													.questionStyles.fontFamily
 											: "",
-										color: formField.questionStyles.color
-											? formField.questionStyles.color
+										color: formField.subQuestion
+											.questionStyles.color
+											? formField.subQuestion
+													.questionStyles.color
 											: "black",
 									},
 								}}
-								variant="standard"
 							/>
 							<TextField
 								variant="standard"
-								value={"Response goes here."}
+								value="Response goes here."
 								disabled={true}
 								margin="dense"
-								style={{
-									width: formField.subQuestion
-										? "230px"
-										: "305px",
-									marginLeft: "auto",
-									maxWidth: formField.subQuestion
-										? "230px"
-										: "305px",
-								}}
+								fullWidth
 								inputProps={{
 									style: {
 										fontSize:
-											formField.responseStyles.fontSize,
-										fontWeight: formField.responseStyles
-											.bold
+											formField.subQuestion.responseStyles
+												.fontSize,
+										fontWeight: formField.subQuestion
+											.responseStyles.bold
 											? "bold"
 											: "unset",
-										textDecoration: formField.responseStyles
-											.underlined
+										textDecoration: formField.subQuestion
+											.responseStyles.underlined
 											? "underline"
 											: "",
-										fontStyle: formField.responseStyles
-											.italic
+										fontStyle: formField.subQuestion
+											.responseStyles.italic
 											? "italic"
 											: "normal",
-										fontFamily: formField.responseStyles
-											.fontFamily
-											? formField.responseStyles
-													.fontFamily
+										fontFamily: formField.subQuestion
+											.responseStyles.fontFamily
+											? formField.subQuestion
+													.responseStyles.fontFamily
 											: "",
-										color: formField.responseStyles.color
-											? formField.responseStyles.color
+										color: formField.subQuestion
+											.responseStyles.color
+											? formField.subQuestion
+													.responseStyles.color
 											: "black",
 									},
 								}}
 							/>
 						</div>
 						<div
-							style={{ marginLeft: "auto", paddingLeft: "15px" }}
+							style={{
+								marginLeft: "auto",
+								paddingLeft: "10px",
+								display: "flex",
+							}}
 						>
 							<IconButton>
 								<Settings color="action" />
 							</IconButton>
 							<IconButton
 								onClick={() => {
-									if (formField.subQuestion) {
-										setFormFields((formFields) =>
-											formFields.map((item) => {
-												if (item.id === formField.id) {
-													return {
-														...item.subQuestion,
-													};
-												}
-												return item;
-											})
-										);
-									} else {
-										setFormFields((formFields) =>
-											formFields.filter(
-												(item) =>
-													item.id !== formField.id
-											)
-										);
-									}
+									formField.subQuestion = false;
+									setFormFields((formFields) => [
+										...formFields,
+									]);
 								}}
 							>
 								<DeleteIcon color="action" />
@@ -189,207 +314,46 @@ export default function QuestionCard({
 						</div>
 					</CardContent>
 				</Card>
-			</div>
-			<div>
-				{formField.subQuestion ? (
-					<Card
-						variant="outlined"
-						sx={{ borderLeft: `6px solid #4fc3f7` }}
-					>
-						<CardContent
-							style={{
-								display: "flex",
-								flexDirection: "row",
-								alignItems: "center",
-							}}
-						>
-							<Checkbox
-								checked={selected.includes(
-									formField.subQuestion.id
-								)}
-								onChange={() => {
-									selected.includes(formField.subQuestion.id)
-										? setSelected(() =>
-												selected.filter(
-													(id) =>
-														id !==
-														formField.subQuestion.id
-												)
-										  )
-										: setSelected([
-												...selected,
-												formField.subQuestion.id,
-										  ]);
-								}}
-								inputProps={{ "aria-label": "controlled" }}
-							/>
-							<div
-								style={{
-									display: "flex",
-									flexDirection: "column",
-									alignItems: "center",
-									marginLeft: "20px",
-								}}
-							>
-								<TextField
-									size="small"
-									label="Question"
-									margin="dense"
-									style={{ width: "260px" }}
-									value={formField.subQuestion.question}
-									onChange={(event) => {
-										formField.subQuestion.question =
-											event.target.value;
-										setFormFields((formFields) => [
-											...formFields,
-										]);
-									}}
-									variant="standard"
-									InputLabelProps={{
-										style: {
-											fontSize:
-												formField.subQuestion
-													.questionStyles.fontSize,
-										},
-									}}
-									inputProps={{
-										style: {
-											fontSize:
-												formField.subQuestion
-													.questionStyles.fontSize,
-											fontWeight: formField.subQuestion
-												.questionStyles.bold
-												? "bold"
-												: "unset",
-											textDecoration: formField
-												.subQuestion.questionStyles
-												.underlined
-												? "underline"
-												: "",
-											fontStyle: formField.subQuestion
-												.questionStyles.italic
-												? "italic"
-												: "normal",
-											fontFamily: formField.subQuestion
-												.questionStyles.fontFamily
-												? formField.subQuestion
-														.questionStyles
-														.fontFamily
-												: "",
-											color: formField.subQuestion
-												.questionStyles.color
-												? formField.subQuestion
-														.questionStyles.color
-												: "black",
-										},
-									}}
-								/>
-								<TextField
-									variant="standard"
-									value="Response goes here."
-									disabled={true}
-									margin="dense"
-									style={{
-										width: "230px",
-										marginLeft: "auto",
-									}}
-									inputProps={{
-										style: {
-											fontSize:
-												formField.subQuestion
-													.responseStyles.fontSize,
-											fontWeight: formField.subQuestion
-												.responseStyles.bold
-												? "bold"
-												: "unset",
-											textDecoration: formField
-												.subQuestion.responseStyles
-												.underlined
-												? "underline"
-												: "",
-											fontStyle: formField.subQuestion
-												.responseStyles.italic
-												? "italic"
-												: "normal",
-											fontFamily: formField.subQuestion
-												.responseStyles.fontFamily
-												? formField.subQuestion
-														.responseStyles
-														.fontFamily
-												: "",
-											color: formField.subQuestion
-												.responseStyles.color
-												? formField.subQuestion
-														.responseStyles.color
-												: "black",
-										},
-									}}
-								/>
-							</div>
-							<div
-								style={{
-									marginLeft: "auto",
-									paddingLeft: "10px",
-									display: "flex",
-								}}
-							>
-								<IconButton>
-									<Settings color="action" />
-								</IconButton>
-								<IconButton
-									onClick={() => {
-										formField.subQuestion = false;
-										setFormFields((formFields) => [
-											...formFields,
-										]);
-									}}
-								>
-									<DeleteIcon color="action" />
-								</IconButton>
-							</div>
-						</CardContent>
-					</Card>
-				) : (
-					<Button
-						startIcon={<AddIcon />}
-						style={{ marginLeft: "30px", marginRight: "139px" }}
-						onClick={() => {
-							setFormFields((formFields) =>
-								formFields.map((item) => {
-									if (item.id === formField.id) {
-										return {
-											...item,
-											subQuestion: {
-												id: Date.now(),
-												type: "standard",
-												question: "",
-												isRequired: "false",
-												questionStyles: {
-													fontSize: 16,
-													underlined: false,
-													italic: false,
-													bold: false,
-													color: "black",
-												},
-												responseStyles: {
-													fontSize: 16,
-													underlined: false,
-													italic: false,
-													bold: false,
-													color: "black",
-												},
+			) : (
+				<Button
+					startIcon={<AddIcon />}
+					style={{ marginLeft: "10px" }}
+					onClick={() => {
+						setFormFields((formFields) =>
+							formFields.map((item) => {
+								if (item.id === formField.id) {
+									return {
+										...item,
+										subQuestion: {
+											id: Date.now(),
+											type: "standard",
+											question: "",
+											isRequired: "false",
+											questionStyles: {
+												fontSize: 16,
+												underlined: false,
+												italic: false,
+												bold: false,
+												color: "black",
 											},
-										};
-									}
-									return item;
-								})
-							);
-						}}
-					>
-						Add subsequent field
-					</Button>
-				)}
-			</div>
+											responseStyles: {
+												fontSize: 16,
+												underlined: false,
+												italic: false,
+												bold: false,
+												color: "black",
+											},
+										},
+									};
+								}
+								return item;
+							})
+						);
+					}}
+				>
+					Add subsequent field
+				</Button>
+			)}
 		</div>
 	);
 }

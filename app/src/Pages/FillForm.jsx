@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_RESPONSE, GET_FORM } from "../Helpers/url_helper";
+import { InsertDriveFile, Print, Visibility } from "@mui/icons-material";
+import ResponseCard from "../Components/ResponseCard";
 import {
 	Alert,
 	AppBar,
@@ -16,8 +18,6 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import { InsertDriveFile, Print, Visibility } from "@mui/icons-material";
-import ResponseCard from "../Components/ResponseCard";
 
 export default function FillForm() {
 	const { formId } = useParams();
@@ -112,7 +112,7 @@ export default function FillForm() {
 				maxWidth="md"
 				style={{
 					display: "flex",
-					flexDirection: "column",
+					flexDirection: "column"
 				}}
 			>
 				<Card
