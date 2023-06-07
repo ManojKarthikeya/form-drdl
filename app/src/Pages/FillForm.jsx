@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
@@ -18,10 +18,12 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
+import ReactToPrint from "react-to-print";
 
 export default function FillForm() {
 	const { formId } = useParams();
 	const navigate = useNavigate();
+	let FillFormRef = useRef(null);
 	const [formFields, setFormFields] = useState([]);
 	const [snackbar, setSnackBar] = useState({ open: false, success: false });
 	const { data: formData, status: formStatus } = useQuery(
@@ -73,9 +75,15 @@ export default function FillForm() {
 						/>
 					</IconButton>
 					<IconButton>
-						<Print
-							style={{ fontSize: "28px", color: "white" }}
-							color="white"
+						<ReactToPrint
+							onBeforePrint={() => {}}
+							trigger={() => (
+								<Print
+									style={{ fontSize: "28px", color: "white" }}
+									color="white"
+								/>
+							)}
+							content={() => FillFormRef}
 						/>
 					</IconButton>
 					<Button
@@ -109,10 +117,11 @@ export default function FillForm() {
 				</Toolbar>
 			</AppBar>
 			<Container
+				ref={(element) => (FillFormRef = element)}
 				maxWidth="md"
 				style={{
 					display: "flex",
-					flexDirection: "column"
+					flexDirection: "column",
 				}}
 			>
 				<Card

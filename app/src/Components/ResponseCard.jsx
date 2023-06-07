@@ -58,7 +58,6 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 						<TextField
 							variant="standard"
 							size="small"
-							placeholder="Answer"
 							style={{
 								marginLeft: "20px",
 							}}
@@ -159,7 +158,6 @@ export default function ResponseCard({ questionEntry, setQuestionEntries }) {
 							<TextField
 								variant="standard"
 								size="small"
-								placeholder="Answer"
 								fullWidth
 								style={{
 									marginLeft: "20px",
