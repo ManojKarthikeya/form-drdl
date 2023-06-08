@@ -66,6 +66,7 @@ export default function Table({columns, data, dispatch: dataDispatch, skipReset}
 
     return false;
   }
+  console.log(rows)
 
   return (
     <>

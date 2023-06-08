@@ -178,12 +178,15 @@ function reducer(state, action) {
   }
 }
 
-function FinalTable() {
+function FinalTable(props) {
   const [state, dispatch] = useReducer(reducer, makeData(1));
 
   useEffect(() => {
     dispatch({ type: "enable_reset" });
   }, [state.data, state.columns]);
+
+  props.onSaveColumns(state.columns);
+  props.onSaveData(state.data);
 
   return (
     <div
