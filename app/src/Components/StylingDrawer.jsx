@@ -172,11 +172,11 @@ export default function StylingDrawer({
 					</ToggleButtonGroup>
 					<CirclePicker
 						colors={[
-							"#D9E3F0",
-							"#F47373",
-							"#697689",
-							"#37D67A",
-							"#2CCCE4",
+							"#010000",
+							"#6a6161",
+							"#878e98",
+							"#b70d2a",
+							"#1b62ae",
 						]}
 						onChange={labelColorPickerHandler}
 						color={labelColor}
@@ -255,33 +255,14 @@ export default function StylingDrawer({
 					</ToggleButtonGroup>
 					<CirclePicker
 						colors={[
-							"#D9E3F0",
-							"#F47373",
-							"#697689",
-							"#37D67A",
-							"#2CCCE4",
-						]}
-						color={responseColor}
-						onChange={responseColorPickerHandler}
-					/>
-				</div>
-				<Divider />
-				<div style={{ padding: "20px" }}>
-					<Typography
-						sx={{ marginBottom: "10px" }}
-						variant="subtitle1"
-					>
-						Color
-					</Typography>
-					<CirclePicker
-						colors={[
 							"#010000",
 							"#6a6161",
 							"#878e98",
 							"#b70d2a",
 							"#1b62ae",
 						]}
-						onChange={labelColorPickerHandler}
+						color={responseColor}
+						onChange={responseColorPickerHandler}
 					/>
 				</div>
 				<Divider />

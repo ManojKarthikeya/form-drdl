@@ -44,8 +44,8 @@ router.post("/response", (req, res) => {
 			formName: formName,
 			formId: formId,
 		})
-		.then(() => {
-			res.send("Created Successfully!");
+		.then((result) => {
+			res.send(result);
 		});
 });
 

@@ -5,6 +5,7 @@ import {
 	Button,
 	Card,
 	CardContent,
+	Container,
 	IconButton,
 	TextField,
 	Toolbar,
@@ -12,14 +13,12 @@ import {
 } from "@mui/material";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import { Add, Palette, Visibility } from "@mui/icons-material";
-import PrintIcon from "@mui/icons-material/Print";
 import ResponseValidation from "../Components/ResponseValidation";
 import { useMutation } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_FROM } from "../Helpers/url_helper";
 import { useLocation } from "react-router-dom";
 import StylingDrawer from "../Components/StylingDrawer";
-
 
 export default function CreateForm() {
 	const templateFormdata = useLocation();
@@ -68,8 +67,6 @@ export default function CreateForm() {
 	const [showStylingDrawer, setShowStylingDrawer] = useState(false);
 
 	const handleSettingsClick = (id, subQuestion) => {};
-
-
 
 	return (
 		<div style={{ marginTop: "65px" }}>
@@ -121,19 +118,19 @@ export default function CreateForm() {
 					</Button>
 				</Toolbar>
 			</AppBar>
-			<div
+			<Container
+				maxWidth="md"
 				style={{
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
 				}}
 			>
 				<Card
 					variant="outlined"
 					style={{
 						borderLeft: "6px solid #1976d2",
-						margin: "10px",
-						width: "902px",
+						marginTop: "10px",
+						marginBottom: "10px",
 					}}
 				>
 					<CardContent style={{ paddingRight: "40px" }}>
@@ -175,7 +172,7 @@ export default function CreateForm() {
 						/>
 					);
 				})}
-				<div style={{ width: "910px" }}>
+				<div>
 					<Button
 						startIcon={<Add />}
 						onClick={() => {
@@ -209,9 +206,8 @@ export default function CreateForm() {
 					>
 						Add a field
 					</Button>
-					
 				</div>
-			</div>
+			</Container>
 			<ResponseValidation />
 			<StylingDrawer
 				showStylingDrawer={showStylingDrawer}
@@ -220,7 +216,6 @@ export default function CreateForm() {
 				setSelected={setSelected}
 				setFormFields={setFormFields}
 			/>
-
 		</div>
 	);
 }

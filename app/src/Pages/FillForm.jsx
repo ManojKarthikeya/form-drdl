@@ -1,24 +1,31 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "react-query";
 import axiosInstance from "../Helpers/axios";
 import { CREATE_RESPONSE, GET_FORM } from "../Helpers/url_helper";
+import { InsertDriveFile, Print, Visibility } from "@mui/icons-material";
+import ResponseCard from "../Components/ResponseCard";
 import {
+	Alert,
 	AppBar,
 	Button,
 	Card,
 	CardContent,
 	CircularProgress,
+	Container,
 	IconButton,
+	Snackbar,
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import { InsertDriveFile, Print, Visibility } from "@mui/icons-material";
-import ResponseCard from "../Components/ResponseCard";
+import ReactToPrint from "react-to-print";
 
 export default function FillForm() {
 	const { formId } = useParams();
+	const navigate = useNavigate();
+	let FillFormRef = useRef(null);
 	const [formFields, setFormFields] = useState([]);
+	const [snackbar, setSnackBar] = useState({ open: false, success: false });
 	const { data: formData, status: formStatus } = useQuery(
 		[formId],
 		() => axiosInstance(`${GET_FORM}${formId}`).then((res) => res.data),
@@ -32,8 +39,6 @@ export default function FillForm() {
 	const mutation = useMutation("responses", (newResponse) =>
 		axiosInstance.post(CREATE_RESPONSE, newResponse)
 	);
-
-	console.log(formFields);
 
 	if (formStatus === "loading") {
 		return (
@@ -70,45 +75,65 @@ export default function FillForm() {
 						/>
 					</IconButton>
 					<IconButton>
-						<Print
-							style={{ fontSize: "28px", color: "white" }}
-							color="white"
+						<ReactToPrint
+							onBeforePrint={() => {}}
+							trigger={() => (
+								<Print
+									style={{ fontSize: "28px", color: "white" }}
+									color="white"
+								/>
+							)}
+							content={() => FillFormRef}
 						/>
 					</IconButton>
 					<Button
 						sx={{ borderColor: "white", color: "white" }}
 						onClick={() => {
-							mutation.mutate({
-								userId: 123,
-								formId: formData._id,
-								fields: formFields.map((item) => ({
-									question: item.question,
-									response: item.response,
-									subQuestion: item.subQuestion,
-								})),
-							});
+							mutation.mutate(
+								{
+									userId: 123,
+									formId: formData._id,
+									fields: formFields.map((item) => ({
+										question: item.question,
+										response: item.response,
+										subQuestion: item.subQuestion,
+									})),
+								},
+								{
+									onSuccess: (data) => {
+										setSnackBar({
+											...snackbar,
+											show: true,
+											success: true,
+										});
+										navigate(`/response/${data.data._id}`);
+									},
+								}
+							);
 						}}
 					>
 						Submit
 					</Button>
 				</Toolbar>
 			</AppBar>
-			<div
+			<Container
+				ref={(element) => (FillFormRef = element)}
+				maxWidth="md"
 				style={{
 					display: "flex",
 					flexDirection: "column",
-					alignItems: "center",
 				}}
 			>
 				<Card
 					variant="outlined"
 					style={{
 						borderLeft: "6px solid #1976d2",
-						margin: "10px",
-						width: "902px",
+						marginTop: "10px",
+						marginBottom: "10px",
+						width: "100%",
 					}}
 				>
-					<CardContent style={{ paddingLeft: "20px" }}>
+					<CardContent style={{ paddingLeft: "15px" }}>
 						<Typography variant="h2">{formData.name}</Typography>
 						{formData.description ? (
 							<Typography variant="body2">
@@ -126,7 +151,25 @@ export default function FillForm() {
 						/>
 					);
 				})}
-			</div>
+			</Container>
+			<Snackbar
+				open={snackbar.open}
+				onClose={(event, reason) => {
+					if (reason === "clickaway") {
+						return;
+					}
+					setSnackBar({ ...snackbar, open: false });
+				}}
+				autoHideDuration={3000}
+			>
+				{snackbar.success ? (
+					<Alert severity="success" sx={{ width: "100%" }}>
+						This is a success message!
+					</Alert>
+				) : (
+					<Alert severity="error">This is an error message!</Alert>
+				)}
+			</Snackbar>
 		</div>
 	);
 }

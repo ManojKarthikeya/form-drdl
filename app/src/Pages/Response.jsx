@@ -118,10 +118,12 @@ export default function Response() {
 						<Typography>{formData.description}</Typography>
 					</CardContent>
 				</Card>
-				{responseFields.map((field) => (
-					<ResponseCompleteCard questionEntry={field} key={field} />
+				{responseFields.map((field, index) => (
+					<ResponseCompleteCard questionEntry={field} key={index} />
 				))}
-				
+				<Typography align="right" style={{color : "grey"}}>
+					Reponse id: {responseData._id}
+				</Typography>
 			</Container>
 		</div>
 	);
